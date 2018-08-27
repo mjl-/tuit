@@ -4,6 +4,7 @@ import * as types from './types'
 import * as classes from './classes'
 import * as attr from './attr'
 import * as split from './split'
+import * as functions from './functions'
 
 export const rowMarkSelected = (classes: classes.Classes, ui: HTMLElement, primary: HTMLElement, secondary: HTMLElement) => {
 	ui.className = classes.listItemSelected.class
@@ -154,7 +155,7 @@ export class List<
 			),
 			this.listBox,
 		)
-		this.noSelection = dom.middle(div('Choose from the list'))
+		this.noSelection = functions.middle(div('Choose from the list'))
 		this.detailBox = app.box()
 		const splitUI = new split.Split(this.list, this.detailBox)
 		this.ui = app.box(

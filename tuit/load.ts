@@ -61,7 +61,7 @@ export const load = (classes: classes.Classes, elem: HTMLElement, fn: () => [typ
 			)
 		}
 		dom.children(elem,
-			dom.middle(
+			functions.middle(
 				div(
 					dom.span('loading...'),
 					dom.span(classes.spin),

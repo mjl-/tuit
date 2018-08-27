@@ -36,8 +36,16 @@ export const fade = (elem: HTMLElement, step: number, done: () => void) => {
 	}, 16)
 }
 
-export const box = (className: string, ...l: dom.ElemArg[]): HTMLElement => {
-	const e = dom.makeElement('div', [{ ui: 'box' }, { class: className }, ...l])
+export const box = (className: string, ...l: dom.ElemArg[]) => {
+	const e = dom.div({ ui: 'box' }, { class: className }, ...l)
 	e.style.setProperty('height', '100%') // todo: figure out why this is necessary. same style is in class, but doesn't have the effect this inline style has....
 	return e
+}
+
+export const middle = (...kids: HTMLElement[]) => {
+	return dom.div({ style: 'display: flex; height: 100%; text-align: center' },
+		dom.div({ 'style': 'flex-grow: 1; align-self: center' },
+			...kids,
+		),
+	)
 }

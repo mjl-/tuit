@@ -455,7 +455,7 @@ table {
 	}
 
 	addRawRule(rule: string) {
-		const sheet = this.style.sheet as CSSStyleSheet;
+		const sheet = this.style.sheet as CSSStyleSheet
 		if (!sheet) {
 			throw new Error('no sheet in stylesheet?')
 		}
