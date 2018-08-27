@@ -1,13 +1,12 @@
-import { div, _style } from '../dom'
-import * as types from './types'
+import * as dom from '../dom'
 import * as classes from './classes'
 
-export class Popover implements types.UI {
-	ui: HTMLElement
+export class Popover implements dom.Rooter {
+	root: HTMLElement
 
 	constructor(classes: classes.Classes, elem: HTMLElement) {
-		this.ui = div(
-			_style({
+		this.root = dom.div(
+			dom._style({
 				position: 'absolute',
 				bottom: '2.2em',
 				width: '100%',

@@ -1,17 +1,16 @@
-import { div, _style } from '../dom'
 import * as dom from '../dom'
 import * as types from './types'
 import * as attr from './attr'
 import * as classes from './classes'
 import * as popover from './popover'
 
-export class TypeaheadOption implements types.UI {
-	ui: HTMLElement
+export class TypeaheadOption implements dom.Rooter {
+	root: HTMLElement
 
 	constructor(classes: classes.Classes, public value: string, typeahead: Typeahead) {
-		this.ui = div(
+		this.root = dom.div(
 			classes.typeaheadOption,
-			_style({ padding: '0.25em' }),
+			dom._style({ padding: '0.25em' }),
 			attr.tabindex0,
 			value,
 			dom.listener('click', ev => typeahead.selected(this)),
@@ -41,7 +40,7 @@ const commonPrefix = (s: string, l: string[]): string => {
 }
 
 export class Typeahead implements types.UI {
-	ui: HTMLElement
+	root: HTMLElement
 
 	private popoverBox: HTMLElement
 	private optionsAll: TypeaheadOption[]
@@ -63,8 +62,8 @@ export class Typeahead implements types.UI {
 	) {
 		this.optionsAll = this.values.map(v => new TypeaheadOption(classes, v, this))
 		this.optionsFiltered = this.optionsAll
-		this.popoverBox = div()
-		this.optionsBox = div(
+		this.popoverBox = dom.div()
+		this.optionsBox = dom.div(
 			...this.optionsFiltered,
 		)
 		this.popover = new popover.Popover(classes, this.optionsBox)
@@ -95,8 +94,8 @@ export class Typeahead implements types.UI {
 				this.filter(true)
 			}),
 		)
-		this.ui = dom.div(
-			_style({ position: 'relative' }),
+		this.root = dom.div(
+			dom._style({ position: 'relative' }),
 			this.input,
 			this.popoverBox,
 		)
@@ -159,7 +158,7 @@ export class Typeahead implements types.UI {
 			return true
 		}
 		for (let i = 0; i < this.optionsFiltered.length; i++) {
-			if (this.optionsFiltered[i].ui === elem) {
+			if (this.optionsFiltered[i].root === elem) {
 				return true
 			}
 		}

@@ -1,4 +1,3 @@
-import { div, _style } from '../dom'
 import * as dom from '../dom'
 import * as types from './types'
 import * as classes from './classes'
@@ -23,7 +22,7 @@ export interface ItemOpener<ItemView> {
 	openItem: (key: string) => Promise<ItemView>
 }
 
-export interface ItemRower<Item> extends types.UI {
+export interface ItemRower<Item> extends dom.Rooter {
 	key: string	// unique value identifying item
 	item: Item
 	render: () => void
@@ -39,11 +38,11 @@ export interface Selecter<Item, ItemRow extends ItemRower<Item>> {
 
 export class List<
 	Item,
-	ItemRow extends types.UI & ItemRower<Item>,
-	ItemNew extends types.UI & types.Focuser & types.Stater,
-	ItemView extends types.UI & types.Focuser & types.Stater,
+	ItemRow extends dom.Rooter & ItemRower<Item>,
+	ItemNew extends types.UI & types.Stater,
+	ItemView extends types.UI & types.Stater,
 	> implements types.UI, types.Focuser, types.Stater {
-	ui: HTMLElement
+	root: HTMLElement
 	selected?: ItemRow
 	rowsAll: ItemRow[]
 	rowsFiltered: ItemRow[]
@@ -56,7 +55,7 @@ export class List<
 	newUI?: ItemNew
 
 	constructor(
-		private app: types.Rooter & types.Saver & types.Loader & types.Classer & types.Boxer & types.StateSaver,
+		private app: dom.Rooter & types.Saver & types.Loader & types.Classer & types.Boxer & types.StateSaver,
 		private title: string,
 		items: Item[],
 		private rowClass: { new(app: types.Classer, item: Item, listUI: Selecter<Item, ItemRow>): ItemRow },
@@ -89,7 +88,7 @@ export class List<
 		this.rowsFiltered = this.rowsAll.map(e => e)
 		this.rowsFiltered.sort((a: ItemRow, b: ItemRow) => a.compare(b))
 		this.listBox = app.box(
-			_style({ 'border-top': '.25em solid #fff' }),
+			dom._style({ 'border-top': '.25em solid #fff' }),
 			attr.tabindex0,
 			dom.listener('keydown', ev => {
 				if (this.rowsFiltered.length === 0) {
@@ -120,7 +119,7 @@ export class List<
 						}
 						break
 					case 'Enter':
-						const e = this.rowsFiltered.find(ur => ur.ui === document.activeElement)
+						const e = this.rowsFiltered.find(ur => ur.root === document.activeElement)
 						if (e) {
 							this.selectClick(e)
 						}
@@ -133,8 +132,8 @@ export class List<
 			...this.rowsFiltered,
 		)
 		this.list = app.box(
-			_style({ 'border-bottom': '.25em solid #ddd' }),
-			div(
+			dom._style({ 'border-bottom': '.25em solid #ddd' }),
+			dom.div(
 				app.classes.boxPadding,
 				dom.h1(
 					classes.title,
@@ -142,7 +141,7 @@ export class List<
 					' ',
 					dom.button(
 						classes.btnSuccess,
-						_style({ 'font-weight': 'normal' }),
+						dom._style({ 'font-weight': 'normal' }),
 						dom.listener('click', ev => {
 							this.deselect(false)
 							this.loadNew([])
@@ -155,10 +154,10 @@ export class List<
 			),
 			this.listBox,
 		)
-		this.noSelection = functions.middle(div('Choose from the list'))
+		this.noSelection = functions.middle(dom.div('Choose from the list'))
 		this.detailBox = app.box()
 		const splitUI = new split.Split(this.list, this.detailBox)
-		this.ui = app.box(
+		this.root = app.box(
 			{ ui: 'ItemList' },
 			splitUI,
 		)
@@ -168,7 +167,7 @@ export class List<
 		const newUI = this.newClass()
 		this.newUI = newUI
 		const p = newUI.loadState(state)
-		this.app.load(this.detailBox, () => [{}, Promise.resolve([newUI.ui])], () => newUI.focus())
+		this.app.load(this.detailBox, () => [{}, Promise.resolve([newUI.root])], () => newUI.focus())
 		return p
 	}
 
@@ -244,8 +243,8 @@ export class List<
 		this.selected.markSelected()
 		this.viewUI = this.viewClass(ir)
 		const p = this.viewUI.loadState(state)
-		const ui = this.viewUI.ui
-		this.app.load(this.detailBox, () => [{}, Promise.resolve([ui])])
+		const viewUI = this.viewUI
+		this.app.load(this.detailBox, () => [{}, Promise.resolve([viewUI.root])])
 		return p
 	}
 

@@ -1,17 +1,16 @@
-import { div, _style } from '../dom'
 import * as dom from '../dom'
 import * as types from './types'
 import * as attr from './attr'
 
-export class Tabs implements types.UI, types.Focuser, types.Stater {
-	ui: HTMLElement
+export class Tabs implements types.UI, types.Stater {
+	root: HTMLElement
 
 	selectedBox: HTMLElement
 	activeIndex: number
 	buttons: HTMLButtonElement[]
 	loaded: boolean[]
 
-	constructor(private app: types.Rooter & types.Saver & types.Loader & types.Classer & types.Boxer & types.StateSaver, public tabs: { label: string, name: string, ui: types.UI & types.Focuser & types.Stater }[]) {
+	constructor(private app: dom.Rooter & types.Saver & types.Loader & types.Classer & types.Boxer & types.StateSaver, public tabs: { label: string, name: string, ui: types.UI & types.Focuser & types.Stater }[]) {
 		this.activeIndex = -1
 		this.buttons = tabs.map((tab, index) =>
 			dom.button(
@@ -23,9 +22,9 @@ export class Tabs implements types.UI, types.Focuser, types.Stater {
 		)
 		this.loaded = this.buttons.map(() => false)
 		this.selectedBox = app.box()
-		this.ui = app.box(
-			div(
-				_style({
+		this.root = app.box(
+			dom.div(
+				dom._style({
 					'border-bottom': '1px solid #ccc',
 					'text-align': 'center',
 				}),
@@ -57,7 +56,7 @@ export class Tabs implements types.UI, types.Focuser, types.Stater {
 		this.activeIndex = index
 		this.buttons[this.activeIndex].className = this.app.classes.groupBtnPrimary.class
 		const ui = this.tabs[this.activeIndex].ui
-		this.app.load(this.selectedBox, () => [{}, Promise.resolve([ui.ui])])
+		this.app.load(this.selectedBox, () => [{}, Promise.resolve([ui.root])])
 		if (this.loaded[index]) {
 			return Promise.resolve()
 		}

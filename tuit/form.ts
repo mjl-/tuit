@@ -1,4 +1,3 @@
-import { div, _style } from '../dom'
 import * as dom from '../dom'
 import * as types from './types'
 
@@ -132,7 +131,7 @@ export const makeFieldValue = (app: types.Classer, field: Field, value?: any): F
 			const values: { [key: string]: any } = {}
 			const inputs: HTMLInputElement[] = []
 			return {
-				element: div(
+				element: dom.div(
 					...field.options.map((o, index) => {
 						values['' + index] = o.value
 						const input = dom.input(

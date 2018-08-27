@@ -1,15 +1,14 @@
-import { div, _style } from '../dom'
 import * as dom from '../dom'
 import * as types from './types'
 import * as form from './form'
 
-export class FormNew<Item> implements types.UI, types.Focuser, types.Stater {
-	ui: HTMLElement
+export class FormNew<Item> implements types.UI, types.Stater {
+	root: HTMLElement
 
 	fieldValues: form.FieldValue[]
 
 	constructor(
-		app: types.Rooter & types.Saver & types.Loader & types.Classer & types.Boxer,
+		app: dom.Rooter & types.Saver & types.Loader & types.Classer & types.Boxer,
 		objectName: string,
 		fields: form.Field[],
 		create: (object: Item) => Promise<void>,
@@ -18,9 +17,9 @@ export class FormNew<Item> implements types.UI, types.Focuser, types.Stater {
 		const spinBox = dom.span()
 		let fieldset: HTMLFieldSetElement
 		this.fieldValues = []
-		this.ui = app.box(
+		this.root = app.box(
 			{ ui: 'FormNew' },
-			div(
+			dom.div(
 				app.classes.boxPaddingLast,
 				dom.h1(
 					classes.title,
@@ -35,7 +34,7 @@ export class FormNew<Item> implements types.UI, types.Focuser, types.Stater {
 						app.save(spinBox, fieldset, 'Adding ' + objectName, () => create(object as Item))
 					}),
 					fieldset = dom.fieldset(
-						div(
+						dom.div(
 							...fields.map(f => {
 								const fv = form.makeFieldValue(app, f)
 								this.fieldValues.push(fv)

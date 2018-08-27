@@ -1,4 +1,3 @@
-import { div, _style } from '../dom'
 import * as dom from '../dom'
 import * as types from './types'
 import * as classes from './classes'
@@ -62,7 +61,7 @@ export const load = (classes: classes.Classes, elem: HTMLElement, fn: () => [typ
 		}
 		dom.children(elem,
 			functions.middle(
-				div(
+				dom.div(
 					dom.span('loading...'),
 					dom.span(classes.spin),
 				),

@@ -1,9 +1,12 @@
 import * as dom from '../dom'
 import * as classes from './classes'
 
-export interface Rooter {
-	root: HTMLElement
+export interface Focuser {
+	focus(): void
 }
+
+export type UI = dom.Rooter & Focuser
+
 
 export type StateWord = (string | StateArray)
 export type State = StateWord[]
@@ -32,18 +35,6 @@ export interface Loader {
 
 export interface Classer {
 	classes: classes.Classes
-}
-
-export interface UI {
-	ui: HTMLElement
-}
-
-export const isUI = (v: any): v is UI => {
-	return 'ui' in v && v.ui instanceof HTMLElement
-}
-
-export interface Focuser {
-	focus(): void
 }
 
 export interface Aborter {

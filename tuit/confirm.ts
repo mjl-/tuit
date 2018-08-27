@@ -1,4 +1,3 @@
-import { div, _style } from '../dom'
 import * as dom from '../dom'
 import * as types from './types'
 import * as classes from './classes'
@@ -6,20 +5,20 @@ import * as popup from './popup'
 import * as styles from './styles'
 
 export class Confirm implements types.UI {
-	ui: HTMLElement
+	root: HTMLElement
 
 	private button: HTMLElement
 
 	constructor(classes: classes.Classes, title: string, message: string, action: string, fn: () => void) {
 		const spinBox = dom.span()
-		this.ui = div(
+		this.root = dom.div(
 			dom.h1(classes.title, title),
 			dom.p(
-				_style({ 'white-space': 'pre-wrap' }),
+				dom._style({ 'white-space': 'pre-wrap' }),
 				message,
 			),
 			dom.br(),
-			div(
+			dom.div(
 				styles.textAlign.right,
 				spinBox,
 				this.button = dom.button(

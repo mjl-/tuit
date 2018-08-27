@@ -4,10 +4,10 @@ import * as classes from './classes'
 import * as functions from './functions'
 
 export class Failure implements types.UI {
-	ui: HTMLElement
+	root: HTMLElement
 
 	constructor(classes: classes.Classes, message: string) {
-		this.ui = dom.div(
+		this.root = dom.div(
 			dom.h1(classes.title, 'Error'),
 			dom.p(
 				dom._style({ 'white-space': 'pre-wrap' }),

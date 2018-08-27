@@ -15,15 +15,15 @@ export class Style {
 	constructor(public pairs: StringKeyDict) { }
 }
 
-interface UI {
-	ui: HTMLElement
+export interface Rooter {
+	root: HTMLElement
 }
 
-const isUI = (v: any): v is UI => {
-	return 'ui' in v && v.ui instanceof HTMLElement
+export const isRooter = (v: any): v is Rooter => {
+	return 'root' in v && v.root instanceof HTMLElement
 }
 
-export type ElemArg = string | Element | Listener | Style | StringDict | UI
+export type ElemArg = string | Element | Listener | Style | StringDict | Rooter
 
 export const fill = <T extends HTMLElement>(e: T, l: ElemArg[]): T => {
 	l.forEach((c) => {
@@ -36,8 +36,8 @@ export const fill = <T extends HTMLElement>(e: T, l: ElemArg[]): T => {
 			for (const key in c.pairs) {
 				e.style.setProperty(key, c.pairs[key])
 			}
-		} else if (isUI(c)) {
-			e.appendChild(c.ui)
+		} else if (isRooter(c)) {
+			e.appendChild(c.root)
 		} else if (c instanceof Element) {
 			e.appendChild(c)
 		} else if (typeof c === 'object' && c !== null && c.constructor === Object) {
@@ -90,15 +90,15 @@ export const _style = (pairs: StringKeyDict) => {
 	return new Style(pairs)
 }
 
-export const children = (elem: HTMLElement, ...kids: (string | UI | HTMLElement)[]) => {
+export const children = (elem: HTMLElement, ...kids: (string | Rooter | HTMLElement)[]) => {
 	while (elem.firstChild) {
 		elem.removeChild(elem.firstChild)
 	}
-	let ensureElement = (e: string | UI | HTMLElement): Element => {
+	let ensureElement = (e: string | Rooter | HTMLElement): Element => {
 		if (typeof e === 'string') {
 			return span(e)
-		} else if (isUI(e)) {
-			return e.ui
+		} else if (isRooter(e)) {
+			return e.root
 		} else {
 			return e
 		}

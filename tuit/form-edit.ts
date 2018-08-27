@@ -1,4 +1,3 @@
-import { div, _style } from '../dom'
 import * as dom from '../dom'
 import * as types from './types'
 import * as list from './list'
@@ -6,13 +5,13 @@ import * as functions from './functions'
 import * as confirm from './confirm'
 import * as form from './form'
 
-export class FormEdit<Item, ItemRow extends list.ItemRower<Item>> implements types.UI, types.Focuser, types.Stater {
-	ui: HTMLElement
+export class FormEdit<Item, ItemRow extends list.ItemRower<Item>> implements types.UI, types.Stater {
+	root: HTMLElement
 
 	fieldValues: form.FieldValue[]
 
 	constructor(
-		app: types.Rooter & types.Saver & types.Loader & types.Classer & types.Boxer & types.StateSaver,
+		app: dom.Rooter & types.Saver & types.Loader & types.Classer & types.Boxer & types.StateSaver,
 		objectName: string,
 		fields: form.Field[],
 		itemRow: list.ItemRower<Item>,
@@ -26,9 +25,9 @@ export class FormEdit<Item, ItemRow extends list.ItemRower<Item>> implements typ
 		const removeSpinBox = dom.span()
 		let removeButton: HTMLButtonElement
 		this.fieldValues = []
-		this.ui = app.box(
+		this.root = app.box(
 			{ ui: 'FormEdit' },
-			div(
+			dom.div(
 				app.classes.boxPaddingLast,
 				dom.h1(
 					classes.title,
@@ -36,7 +35,7 @@ export class FormEdit<Item, ItemRow extends list.ItemRower<Item>> implements typ
 					' ',
 					removeButton = dom.button(
 						classes.btnDanger,
-						_style({ 'font-weight': 'normal' }),
+						dom._style({ 'font-weight': 'normal' }),
 						dom.listener('click', ev => {
 							confirm.confirm(app.root, app.classes, 'Sure?', 'Are you sure you want to remove this ' + objectName + '?', 'Yes, remove ' + objectName)
 								.then(() => {
@@ -59,7 +58,7 @@ export class FormEdit<Item, ItemRow extends list.ItemRower<Item>> implements typ
 						app.save(saveSpinBox, saveFieldset, 'saving ' + objectName, () => save(object as Item))
 					}),
 					saveFieldset = dom.fieldset(
-						div(
+						dom.div(
 							...fields.map(f => {
 								const item: Item = itemRow.item
 								const v: any = (<any>item)[f.name]

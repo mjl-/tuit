@@ -1,14 +1,12 @@
-import { div, _style } from '../dom'
-import * as types from './types'
+import * as dom from '../dom'
 
-
-export class Split implements types.UI {
-	ui: HTMLElement
+export class Split implements dom.Rooter {
+	root: HTMLElement
 
 	constructor(...elems: HTMLElement[]) {
-		const makeChild = (e: HTMLElement) => div(
+		const makeChild = (e: HTMLElement) => dom.div(
 			{ ui: 'SplitChild' },
-			_style({
+			dom._style({
 				display: 'flex',
 				'height': '100%',
 				'overflow-y': 'auto',
@@ -18,9 +16,9 @@ export class Split implements types.UI {
 		const x = [makeChild(elems[0])]
 		elems.slice(1).map(e => {
 			x.push(
-				div(
+				dom.div(
 					{ ui: 'SplitBorder' },
-					_style({
+					dom._style({
 						'height': '100%',
 						width: '1px',
 						'background-color': '#ddd',
@@ -32,14 +30,13 @@ export class Split implements types.UI {
 		if (x.length > 0) {
 			x[x.length - 1].style.setProperty('flex-grow', '1')
 		}
-		this.ui = div(
+		this.root = dom.div(
 			{ ui: 'Split' },
-			_style({
+			dom._style({
 				display: 'flex',
 				height: '100%',
 				'flex-grow': 1,
 				'flex-direction': 'row',
-				//					'align-items': 'stretch'
 			}),
 			...x
 		)

@@ -1,5 +1,4 @@
 import * as dom from '../dom'
-import { div, _style } from '../dom'
 import * as types from './types'
 import * as attr from './attr'
 import * as functions from './functions'
@@ -15,9 +14,9 @@ export const popup = (root: HTMLElement, size: PopupSize, view: types.UI & types
 		bg.remove()
 		popup.remove()
 	}
-	const closeButton = div(
+	const closeButton = dom.div(
 		attr.tabindex0,
-		_style({
+		dom._style({
 			cursor: 'pointer',
 			position: 'absolute',
 			right: '0',
@@ -31,8 +30,8 @@ export const popup = (root: HTMLElement, size: PopupSize, view: types.UI & types
 			canceled()
 		})
 	)
-	const bg = div(
-		_style({
+	const bg = dom.div(
+		dom._style({
 			position: 'fixed',
 			top: '0',
 			left: '0',
@@ -52,8 +51,8 @@ export const popup = (root: HTMLElement, size: PopupSize, view: types.UI & types
 	} else if (size === PopupSize.Large) {
 		halfWidth = '450px'
 	}
-	const popup = div(
-		_style({
+	const popup = dom.div(
+		dom._style({
 			position: 'fixed',
 			top: '30px',
 			left: 'calc(50% - ' + halfWidth + ')',
