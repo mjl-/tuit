@@ -1,5 +1,5 @@
-import { div, _style } from '../domgen'
-import * as dg from '../domgen'
+import { div, _style } from '../dom'
+import * as dom from '../dom'
 import * as types from './types'
 import * as classes from './classes'
 import * as popup from './popup'
@@ -11,20 +11,20 @@ export class Confirm implements types.UI {
 	private button: HTMLElement
 
 	constructor(classes: classes.Classes, title: string, message: string, action: string, fn: () => void) {
-		const spinBox = dg.span()
+		const spinBox = dom.span()
 		this.ui = div(
-			dg.h1(classes.title, title),
-			dg.p(
+			dom.h1(classes.title, title),
+			dom.p(
 				_style({ 'white-space': 'pre-wrap' }),
 				message,
 			),
-			dg.br(),
+			dom.br(),
 			div(
 				styles.textAlign.right,
 				spinBox,
-				this.button = dg.button(
+				this.button = dom.button(
 					classes.btnPrimary,
-					dg.listener('click', ev => fn()),
+					dom.listener('click', ev => fn()),
 					action,
 				),
 			),

@@ -1,4 +1,4 @@
-import { div, _style } from '../domgen'
+import { div, _style } from '../dom'
 import * as types from './types'
 
 

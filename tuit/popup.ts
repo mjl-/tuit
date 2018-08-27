@@ -1,5 +1,5 @@
-import * as dg from '../domgen'
-import { div, _style } from '../domgen'
+import * as dom from '../dom'
+import { div, _style } from '../dom'
 import * as types from './types'
 import * as attr from './attr'
 import * as functions from './functions'
@@ -26,7 +26,7 @@ export const popup = (root: HTMLElement, size: PopupSize, view: types.UI & types
 			padding: '0.25em 0.5em 0.5em',
 		}),
 		'x',
-		dg.listener('click', ev => {
+		dom.listener('click', ev => {
 			close()
 			canceled()
 		})
@@ -41,7 +41,7 @@ export const popup = (root: HTMLElement, size: PopupSize, view: types.UI & types
 			'background-color': 'rgba(0, 0, 0, 0.5)',
 			opacity: '0',
 		}),
-		dg.listener('click', ev => {
+		dom.listener('click', ev => {
 			close()
 			canceled()
 		}),
@@ -66,7 +66,7 @@ export const popup = (root: HTMLElement, size: PopupSize, view: types.UI & types
 		}),
 		closeButton,
 		view,
-		dg.listener('keyup', ev => {
+		dom.listener('keyup', ev => {
 			if (ev.key === 'Escape') {
 				ev.stopPropagation()
 				close()

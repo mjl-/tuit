@@ -1,4 +1,4 @@
-import * as dg from '../domgen'
+import * as dom from '../dom'
 import * as types from './types'
 
 export const titleize = (s: string) => s.substring(0, 1).toUpperCase() + s.substring(1)
@@ -36,8 +36,8 @@ export const fade = (elem: HTMLElement, step: number, done: () => void) => {
 	}, 16)
 }
 
-export const box = (className: string, ...l: dg.ElemArg[]): HTMLElement => {
-	const e = dg.makeElement('div', [{ ui: 'box' }, { class: className }, ...l])
+export const box = (className: string, ...l: dom.ElemArg[]): HTMLElement => {
+	const e = dom.makeElement('div', [{ ui: 'box' }, { class: className }, ...l])
 	e.style.setProperty('height', '100%') // todo: figure out why this is necessary. same style is in class, but doesn't have the effect this inline style has....
 	return e
 }

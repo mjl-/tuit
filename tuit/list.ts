@@ -1,5 +1,5 @@
-import { div, _style } from '../domgen'
-import * as dg from '../domgen'
+import { div, _style } from '../dom'
+import * as dom from '../dom'
 import * as types from './types'
 import * as classes from './classes'
 import * as attr from './attr'
@@ -64,10 +64,10 @@ export class List<
 	) {
 		const classes = app.classes
 
-		this.search = dg.input(
+		this.search = dom.input(
 			classes.searchInput,
 			{ placeholder: 'search...' },
-			dg.listener('keyup', ev => {
+			dom.listener('keyup', ev => {
 				const v = this.searchValue()
 				this.filter()
 				if (v) {
@@ -90,7 +90,7 @@ export class List<
 		this.listBox = app.box(
 			_style({ 'border-top': '.25em solid #fff' }),
 			attr.tabindex0,
-			dg.listener('keydown', ev => {
+			dom.listener('keydown', ev => {
 				if (this.rowsFiltered.length === 0) {
 					return
 				}
@@ -135,14 +135,14 @@ export class List<
 			_style({ 'border-bottom': '.25em solid #ddd' }),
 			div(
 				app.classes.boxPadding,
-				dg.h1(
+				dom.h1(
 					classes.title,
 					title,
 					' ',
-					dg.button(
+					dom.button(
 						classes.btnSuccess,
 						_style({ 'font-weight': 'normal' }),
-						dg.listener('click', ev => {
+						dom.listener('click', ev => {
 							this.deselect(false)
 							this.loadNew([])
 							app.saveState()
@@ -154,7 +154,7 @@ export class List<
 			),
 			this.listBox,
 		)
-		this.noSelection = dg.middle(div('Choose from the list'))
+		this.noSelection = dom.middle(div('Choose from the list'))
 		this.detailBox = app.box()
 		const splitUI = new split.Split(this.list, this.detailBox)
 		this.ui = app.box(
@@ -182,7 +182,7 @@ export class List<
 				return this.loadItem(state, row)
 			}
 		}
-		dg.children(this.detailBox, this.noSelection)
+		dom.children(this.detailBox, this.noSelection)
 		return Promise.resolve()
 	}
 
@@ -273,7 +273,7 @@ export class List<
 		const v = this.searchValue()
 		this.rowsFiltered = this.rowsAll.filter(ir => filter(ir, v) || ir == this.selected)
 		this.rowsFiltered.sort((a: ItemRow, b: ItemRow) => a.compare(b))
-		dg.children(this.listBox, ...this.rowsFiltered)
+		dom.children(this.listBox, ...this.rowsFiltered)
 	}
 
 	addItem(item: Item) {

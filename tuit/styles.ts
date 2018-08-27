@@ -1,4 +1,4 @@
-import { _style } from '../domgen'
+import { _style } from '../dom'
 
 export const textAlign = {
 	left: _style({ 'text-align': 'left' }),

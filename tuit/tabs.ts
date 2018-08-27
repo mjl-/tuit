@@ -1,5 +1,5 @@
-import { div, _style } from '../domgen'
-import * as dg from '../domgen'
+import { div, _style } from '../dom'
+import * as dom from '../dom'
 import * as types from './types'
 import * as attr from './attr'
 
@@ -14,9 +14,9 @@ export class Tabs implements types.UI, types.Focuser, types.Stater {
 	constructor(private app: types.Rooter & types.Saver & types.Loader & types.Classer & types.Boxer & types.StateSaver, public tabs: { label: string, name: string, ui: types.UI & types.Focuser & types.Stater }[]) {
 		this.activeIndex = -1
 		this.buttons = tabs.map((tab, index) =>
-			dg.button(
+			dom.button(
 				app.classes.groupBtnLight,
-				dg.listener('click', ev => this.select(index)),
+				dom.listener('click', ev => this.select(index)),
 				tabs[index].label,
 				attr.tabindex0,
 			)

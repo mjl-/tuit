@@ -1,5 +1,5 @@
-import { div, _style } from '../domgen'
-import * as dg from '../domgen'
+import { div, _style } from '../dom'
+import * as dom from '../dom'
 import * as types from './types'
 import * as list from './list'
 import * as functions from './functions'
@@ -21,23 +21,23 @@ export class FormEdit<Item, ItemRow extends list.ItemRower<Item>> implements typ
 	) {
 		const classes = app.classes
 
-		const saveSpinBox = dg.span()
+		const saveSpinBox = dom.span()
 		let saveFieldset: HTMLFieldSetElement
-		const removeSpinBox = dg.span()
+		const removeSpinBox = dom.span()
 		let removeButton: HTMLButtonElement
 		this.fieldValues = []
 		this.ui = app.box(
 			{ ui: 'FormEdit' },
 			div(
 				app.classes.boxPaddingLast,
-				dg.h1(
+				dom.h1(
 					classes.title,
 					functions.titleize(objectName),
 					' ',
-					removeButton = dg.button(
+					removeButton = dom.button(
 						classes.btnDanger,
 						_style({ 'font-weight': 'normal' }),
-						dg.listener('click', ev => {
+						dom.listener('click', ev => {
 							confirm.confirm(app.root, app.classes, 'Sure?', 'Are you sure you want to remove this ' + objectName + '?', 'Yes, remove ' + objectName)
 								.then(() => {
 									// xxx see if we can make this more typesafe
@@ -50,15 +50,15 @@ export class FormEdit<Item, ItemRow extends list.ItemRower<Item>> implements typ
 					),
 					removeSpinBox,
 				),
-				dg.form(
-					dg.listener('submit', ev => {
+				dom.form(
+					dom.listener('submit', ev => {
 						ev.preventDefault()
 						// xxx see if we can make this more typesafe
 						const object: any = {}
 						this.fieldValues.forEach((fv, index) => object[fields[index].name] = fv.value())
 						app.save(saveSpinBox, saveFieldset, 'saving ' + objectName, () => save(object as Item))
 					}),
-					saveFieldset = dg.fieldset(
+					saveFieldset = dom.fieldset(
 						div(
 							...fields.map(f => {
 								const item: Item = itemRow.item
@@ -68,7 +68,7 @@ export class FormEdit<Item, ItemRow extends list.ItemRower<Item>> implements typ
 								return fv.element
 							}),
 						),
-						dg.button(
+						dom.button(
 							classes.btnPrimary,
 							{ type: 'submit' },
 							'Save ' + objectName,

@@ -1,4 +1,4 @@
-import * as dg from '../domgen'
+import * as dom from '../dom'
 import * as classes from './classes'
 
 export interface Rooter {
@@ -51,5 +51,5 @@ export interface Aborter {
 }
 
 export interface Boxer {
-	box: (...l: dg.ElemArg[]) => HTMLElement
+	box: (...l: dom.ElemArg[]) => HTMLElement
 }

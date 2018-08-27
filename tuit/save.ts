@@ -1,4 +1,4 @@
-import * as dg from '../domgen'
+import * as dom from '../dom'
 import * as functions from './functions'
 import * as classes from './classes'
 
@@ -10,7 +10,7 @@ export const save = (
 	fn: () => Promise<void>,
 	errorHandler: (err: Error) => void,
 ) => {
-	dg.children(spinBox, dg.span(classes.spin))
+	dom.children(spinBox, dom.span(classes.spin))
 	if (disabler) {
 		disabler.disabled = true
 	}
@@ -21,13 +21,13 @@ export const save = (
 	}
 	fn()
 		.then(() => {
-			const checkmark = dg.span(
-				dg._style({ opacity: 0 }),
+			const checkmark = dom.span(
+				dom._style({ opacity: 0 }),
 				classes.checkmarkSuccess,
 			)
-			dg.children(spinBox, checkmark)
+			dom.children(spinBox, checkmark)
 			functions.fade(checkmark, .2, () => { })
-			setTimeout(() => functions.fade(checkmark, -.2, () => dg.children(spinBox)), 1000)
+			setTimeout(() => functions.fade(checkmark, -.2, () => dom.children(spinBox)), 1000)
 			_finally()
 		})
 		.catch((err: Error) => {

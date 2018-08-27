@@ -1,5 +1,5 @@
-import { div, _style } from '../domgen'
-import * as dg from '../domgen'
+import { div, _style } from '../dom'
+import * as dom from '../dom'
 import * as types from './types'
 
 export type FieldKind = 'line' | 'email' | 'number' | 'multiline' | 'checkbox' | 'select' | 'multiselect' | 'radio' | 'date'
@@ -24,20 +24,20 @@ export const makeFieldValue = (app: types.Classer, field: Field, value?: any): F
 
 	switch (field.kind) {
 		case 'line': {
-			const elem = dg.input(
+			const elem = dom.input(
 				app.classes.formInput,
 				{ value: typeof value === 'string' ? value : '' },
 				required,
 				disabled,
 			)
 			return {
-				element: dg.label(field.label, elem),
+				element: dom.label(field.label, elem),
 				value: () => elem.value,
 				focusable: elem,
 			}
 		}
 		case 'email': {
-			const elem = dg.input(
+			const elem = dom.input(
 				app.classes.formInput,
 				{ value: typeof value === 'string' ? value : '' },
 				required,
@@ -45,13 +45,13 @@ export const makeFieldValue = (app: types.Classer, field: Field, value?: any): F
 				disabled,
 			)
 			return {
-				element: dg.label(field.label, elem),
+				element: dom.label(field.label, elem),
 				value: () => elem.value,
 				focusable: elem,
 			}
 		}
 		case 'number': {
-			const elem = dg.input(
+			const elem = dom.input(
 				app.classes.formInput,
 				{ value: typeof value === 'number' ? '' + value : '' },
 				required,
@@ -59,13 +59,13 @@ export const makeFieldValue = (app: types.Classer, field: Field, value?: any): F
 				disabled,
 			)
 			return {
-				element: dg.label(field.label, elem),
+				element: dom.label(field.label, elem),
 				value: () => parseInt(elem.value),
 				focusable: elem,
 			}
 		}
 		case 'multiline': {
-			const elem = dg.textarea(
+			const elem = dom.textarea(
 				app.classes.textarea,
 				required,
 				disabled,
@@ -73,20 +73,20 @@ export const makeFieldValue = (app: types.Classer, field: Field, value?: any): F
 				typeof value === 'string' ? value : '',
 			)
 			return {
-				element: dg.label(field.label, elem),
+				element: dom.label(field.label, elem),
 				value: () => elem.value,
 				focusable: elem,
 			}
 		}
 		case 'checkbox': {
-			const elem = dg.input(
+			const elem = dom.input(
 				required,
 				{ type: 'checkbox' },
 				disabled,
 			)
 			elem.checked = value === true
 			return {
-				element: dg.label(elem, field.label),
+				element: dom.label(elem, field.label),
 				value: () => elem.checked,
 				focusable: elem,
 			}
@@ -97,21 +97,21 @@ export const makeFieldValue = (app: types.Classer, field: Field, value?: any): F
 				throw new Error('field with kind "select" or "multiselect" must have options')
 			}
 			const values: { [key: string]: any } = {}
-			const elem = dg.select(
+			const elem = dom.select(
 				// xxx use value
 				field.kind === 'multiselect' ? { multiple: '' } : {},
 				required,
 				disabled,
 				...field.options.map((o, index) => {
 					values['' + index] = o.value
-					return dg.option(
+					return dom.option(
 						{ value: '' + index },
 						o.label,
 					)
 				})
 			)
 			return {
-				element: dg.label(field.label, elem),
+				element: dom.label(field.label, elem),
 				value: () => {
 					const r: any[] = []
 					for (let i = 0; i < elem.selectedOptions.length; i++) {
@@ -135,7 +135,7 @@ export const makeFieldValue = (app: types.Classer, field: Field, value?: any): F
 				element: div(
 					...field.options.map((o, index) => {
 						values['' + index] = o.value
-						const input = dg.input(
+						const input = dom.input(
 							// xxx use value
 							{ value: o.value },
 							{ type: 'radio' },
@@ -143,7 +143,7 @@ export const makeFieldValue = (app: types.Classer, field: Field, value?: any): F
 							{ name: o.label },
 						)
 						inputs.push(input)
-						return dg.label(o.value, input)
+						return dom.label(o.value, input)
 					}),
 				),
 				value: () => {
@@ -158,14 +158,14 @@ export const makeFieldValue = (app: types.Classer, field: Field, value?: any): F
 				const d = new Date(v)
 				return '' + d.getFullYear() + '-' + (1 + d.getMonth()) + '-' + d.getDate()
 			}
-			const elem = dg.input(
+			const elem = dom.input(
 				app.classes.formInput,
 				{ value: typeof value === 'string' ? formatDate(value) : '' },
 				required,
 				disabled,
 			)
 			return {
-				element: dg.label(field.label, elem),
+				element: dom.label(field.label, elem),
 				value: () => new Date(elem.value).toISOString(),
 				focusable: elem,
 			}

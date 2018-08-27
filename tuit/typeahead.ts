@@ -1,5 +1,5 @@
-import * as dg from '../domgen'
-import { div, _style } from '../domgen'
+import { div, _style } from '../dom'
+import * as dom from '../dom'
 import * as types from './types'
 import * as attr from './attr'
 import * as classes from './classes'
@@ -14,14 +14,14 @@ export class TypeaheadOption implements types.UI {
 			_style({ padding: '0.25em' }),
 			attr.tabindex0,
 			value,
-			dg.listener('click', ev => typeahead.selected(this)),
-			dg.listener('keydown', ev => {
+			dom.listener('click', ev => typeahead.selected(this)),
+			dom.listener('keydown', ev => {
 				if (ev.key === 'Enter') {
 					ev.preventDefault()
 					typeahead.selected(this)
 				}
 			}),
-			dg.listener('blur', ev => typeahead.checkFocus()),
+			dom.listener('blur', ev => typeahead.checkFocus()),
 		)
 	}
 }
@@ -68,16 +68,16 @@ export class Typeahead implements types.UI {
 			...this.optionsFiltered,
 		)
 		this.popover = new popover.Popover(classes, this.optionsBox)
-		this.input = dg.input(
+		this.input = dom.input(
 			inputClass,
 			{ value: value },
-			dg.listener('focus', ev => {
+			dom.listener('focus', ev => {
 				this.focused()
 				this.input.className = inputFocusedClass.class
 				this.filter(true)
 			}),
-			dg.listener('blur', ev => this.checkFocus()),
-			dg.listener('keydown', ev => {
+			dom.listener('blur', ev => this.checkFocus()),
+			dom.listener('keydown', ev => {
 				if (ev.key === 'Enter') {
 					if (this.input.value) {
 						if (this.values.includes(this.input.value)) {
@@ -91,11 +91,11 @@ export class Typeahead implements types.UI {
 					this.input.value = commonPrefix(this.input.value, this.optionsFiltered.map(o => o.value))
 				}
 			}),
-			dg.listener('keyup', ev => {
+			dom.listener('keyup', ev => {
 				this.filter(true)
 			}),
 		)
-		this.ui = dg.div(
+		this.ui = dom.div(
 			_style({ position: 'relative' }),
 			this.input,
 			this.popoverBox,
@@ -142,10 +142,10 @@ export class Typeahead implements types.UI {
 			}
 		})
 		if (this.optionsFiltered.length === 0) {
-			dg.children(this.popoverBox)
+			dom.children(this.popoverBox)
 		} else if (this.popoverBox.childElementCount > 0 || ensure) {
-			dg.children(this.optionsBox, ...this.optionsFiltered)
-			dg.children(this.popoverBox, this.popover)
+			dom.children(this.optionsBox, ...this.optionsFiltered)
+			dom.children(this.popoverBox, this.popover)
 		}
 	}
 
@@ -173,7 +173,7 @@ export class Typeahead implements types.UI {
 			}
 
 			this.input.className = this.inputClass.class
-			dg.children(this.popoverBox)
+			dom.children(this.popoverBox)
 			this.blurred()
 		}, 0)
 	}

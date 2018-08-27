@@ -1,16 +1,48 @@
-twit - minimalist typed web ui toolkit
+# Tuit
 
-# todo
+Tuit is a typescript ui toolkit library that helps you create maintainable,
+fast, secure web applications.
 
-- split twit.ts into multiple files
-- list: mention there are no items if that's the case
-- list: remember the UI's that were created. need to invalidate on change of the object.
-- find a way to make this somewhat responsive. eg splits turning vertical and fixed-size when below certain screen width. turn lists of items into tables when the space allows.
-- implement date-picker
-- more standard components. tables, with search, file uploads, quick forms, etc. look at bootstrap, semantic-ui and material design for inspiration.
-- turn more components into ts ui? like button.
-- more demo's. like a mail client, sql client.
-- show proper errors on invalid forms, eg missing required fields.
-- add possibility to add form validation function that results in clear error messages.
-- expand form fields with help explanation.
-- think about how to use icons. web fonts are nice but too big. can we convert font to something in js? eg svg, or drawn on canvas. then we need a build tool that generates the file with just what we need, and we include that in the ts build.
+Concepts that make it different from the popular frameworks:
+
+- Use typescript as possible, including styling. No need for CSS
+(or processors), HTML or special DSLs and their compilers. Typesafety
+everywhere!
+- No virtual DOM and diffing. You create classes that manage their
+own DOM and typically export one root DOM element.
+
+Tuit only works in the major evergreens.
+
+## Quickstart
+
+todo: write doc that shows creating a simple app...
+
+## Why
+
+The goals are to create maintainable, small (in generated code
+size), fast, secure web applications.
+
+Typescript provides type checking.  this gives us potential for
+maintainability: remove classes of (runtime) errors, provide confident
+refactoring.
+
+You use the DOM API and a small helper module to manipulate the
+DOM. This gives you full power/speed/flexibility of browser layout
+engines. There is no automagic virtual dom diffing with potential
+slowdowns. You're in full control of state. This keeps the application
+small, which makes it fast to load. You do need to know how the DOM
+works.
+
+HTML isn't used. HTML would result in either loose coupling (no
+integration with typechecked code), or requiring yet another DSL
+and compiler. Both aren't worth the trouble.
+
+CSS is used only in limited form: created in typescript, with only
+per-class rules. No error-prone cascading. No SASS needed, one DSL
+and compiler fewer. You can only reference classes you've created
+rules for, again one error source gone. Not loading a full pre-existing
+framework keeps the code size small.
+
+The recurring theme is removing entire classes of errors during
+development, and removing mechanisms (eg DSLs) with unappealing
+cost/benefit ratio.

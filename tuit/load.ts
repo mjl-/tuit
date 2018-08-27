@@ -1,5 +1,5 @@
-import { div, _style } from '../domgen'
-import * as dg from '../domgen'
+import { div, _style } from '../dom'
+import * as dom from '../dom'
 import * as types from './types'
 import * as classes from './classes'
 import * as functions from './functions'
@@ -22,7 +22,7 @@ export const load = (classes: classes.Classes, elem: HTMLElement, fn: () => [typ
 				return
 			}
 			elem.style.opacity = '0'
-			dg.children(elem, ...elems)
+			dom.children(elem, ...elems)
 			functions.fade(elem, .25, () => {
 				if (loaded) {
 					loaded()
@@ -48,11 +48,11 @@ export const load = (classes: classes.Classes, elem: HTMLElement, fn: () => [typ
 
 		loadingShow = new Date().getTime()
 		elem.style.opacity = '1'
-		let abortElem = dg.span()
+		let abortElem = dom.span()
 		if (aborter.abort) {
-			abortElem = dg.button(
+			abortElem = dom.button(
 				classes.btnSecondary,
-				dg.listener('click', ev => {
+				dom.listener('click', ev => {
 					if (aborter.abort) {
 						aborter.abort()
 					}
@@ -60,13 +60,13 @@ export const load = (classes: classes.Classes, elem: HTMLElement, fn: () => [typ
 				'abort'
 			)
 		}
-		dg.children(elem,
-			dg.middle(
+		dom.children(elem,
+			dom.middle(
 				div(
-					dg.span('loading...'),
-					dg.span(classes.spin),
+					dom.span('loading...'),
+					dom.span(classes.spin),
 				),
-				dg.br(),
+				dom.br(),
 				abortElem,
 			)
 		)

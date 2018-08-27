@@ -1,0 +1,17 @@
+{
+  "name": "tuit",
+  "version": "0.0.1",
+  "description": "typed ui toolkit for the web",
+  "main": "tuit.js",
+  "types": "tuit.js.d",
+  "dependencies": {
+    "typescript": "^3.0.1",
+    "typescript-formatter": "^7.2.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "todo"
+}
