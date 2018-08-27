@@ -1,15 +1,15 @@
 import * as dom from '../dom'
-import * as types from './types'
 import * as attr from './attr'
-import * as classes from './classes'
+import * as looks from './looks'
+import * as types from './types'
 import * as popover from './popover'
 
 export class TypeaheadOption implements dom.Rooter {
 	root: HTMLElement
 
-	constructor(classes: classes.Classes, public value: string, typeahead: Typeahead) {
+	constructor(app: types.Looker, public value: string, typeahead: Typeahead) {
 		this.root = dom.div(
-			classes.typeaheadOption,
+			app.looks.typeaheadOption,
 			dom._style({ padding: '0.25em' }),
 			attr.tabindex0,
 			value,
@@ -50,29 +50,29 @@ export class Typeahead implements types.UI {
 	private popover: popover.Popover
 
 	constructor(
-		private classes: classes.Classes,
+		private app: types.Looker,
 		value: string,
 		private values: string[],
-		private inputClass: { class: string },
-		inputFocusedClass: { class: string },
+		private inputLooks: looks.Style,
+		inputFocusedLooks: looks.Style,
 		private select: (v: string) => void,
 		create: (v: string) => void,
 		private focused: () => void,
 		private blurred: () => void,
 	) {
-		this.optionsAll = this.values.map(v => new TypeaheadOption(classes, v, this))
+		this.optionsAll = this.values.map(v => new TypeaheadOption(app, v, this))
 		this.optionsFiltered = this.optionsAll
 		this.popoverBox = dom.div()
 		this.optionsBox = dom.div(
 			...this.optionsFiltered,
 		)
-		this.popover = new popover.Popover(classes, this.optionsBox)
+		this.popover = new popover.Popover(app, this.optionsBox)
 		this.input = dom.input(
-			inputClass,
+			inputLooks,
 			{ value: value },
 			dom.listener('focus', ev => {
 				this.focused()
-				this.input.className = inputFocusedClass.class
+				this.input.className = inputFocusedLooks.className
 				this.filter(true)
 			}),
 			dom.listener('blur', ev => this.checkFocus()),
@@ -128,7 +128,7 @@ export class Typeahead implements types.UI {
 		this.values.push(v)
 		this.values.sort()
 		const i = this.values.indexOf(v)
-		this.optionsAll.splice(i, 0, new TypeaheadOption(this.classes, v, this))
+		this.optionsAll.splice(i, 0, new TypeaheadOption(this.app, v, this))
 		this.filter(false)
 	}
 
@@ -171,7 +171,7 @@ export class Typeahead implements types.UI {
 				return
 			}
 
-			this.input.className = this.inputClass.class
+			this.input.className = this.inputLooks.className
 			dom.children(this.popoverBox)
 			this.blurred()
 		}, 0)

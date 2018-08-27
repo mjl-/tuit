@@ -1,20 +1,20 @@
 import * as dom from '../dom'
 import * as types from './types'
-import * as classes from './classes'
+import * as looks from './looks'
 import * as attr from './attr'
 import * as split from './split'
 import * as functions from './functions'
 
-export const rowMarkSelected = (classes: classes.Classes, ui: HTMLElement, primary: HTMLElement, secondary: HTMLElement) => {
-	ui.className = classes.listItemSelected.class
-	primary.className = classes.listItemSelectedPrimary.class
-	secondary.className = classes.listItemSelectedSecondary.class
+export const rowMarkSelected = (looks: looks.Looks, ui: HTMLElement, primary: HTMLElement, secondary: HTMLElement) => {
+	ui.className = looks.listItemSelected.className
+	primary.className = looks.listItemSelectedPrimary.className
+	secondary.className = looks.listItemSelectedSecondary.className
 }
 
-export const rowMarkUnselected = (classes: classes.Classes, ui: HTMLElement, primary: HTMLElement, secondary: HTMLElement) => {
-	ui.className = classes.listItem.class
-	primary.className = classes.listItemPrimary.class
-	secondary.className = classes.listItemSecondary.class
+export const rowMarkUnselected = (looks: looks.Looks, ui: HTMLElement, primary: HTMLElement, secondary: HTMLElement) => {
+	ui.className = looks.listItem.className
+	primary.className = looks.listItemPrimary.className
+	secondary.className = looks.listItemSecondary.className
 }
 
 
@@ -55,29 +55,27 @@ export class List<
 	newUI?: ItemNew
 
 	constructor(
-		private app: dom.Rooter & types.Saver & types.Loader & types.Classer & types.Boxer & types.StateSaver,
+		private app: dom.Rooter & types.Saver & types.Loader & types.Looker & types.Boxer & types.StateSaver,
 		private title: string,
 		items: Item[],
-		private rowClass: { new(app: types.Classer, item: Item, listUI: Selecter<Item, ItemRow>): ItemRow },
+		private rowClass: { new(app: types.Looker, item: Item, listUI: Selecter<Item, ItemRow>): ItemRow },
 		private newClass: () => ItemNew,
 		private viewClass: (itemRow: ItemRow) => ItemView,
 	) {
-		const classes = app.classes
-
 		this.search = dom.input(
-			classes.searchInput,
+			app.looks.searchInput,
 			{ placeholder: 'search...' },
 			dom.listener('keyup', ev => {
 				const v = this.searchValue()
 				this.filter()
 				if (v) {
 					if (this.rowsFiltered.length > 0) {
-						this.search.className = classes.searchInputFiltered.class
+						this.search.className = app.looks.searchInputFiltered.className
 					} else {
-						this.search.className = classes.searchInputNoresults.class
+						this.search.className = app.looks.searchInputNoresults.className
 					}
 				} else {
-					this.search.className = classes.searchInput.class
+					this.search.className = app.looks.searchInput.className
 				}
 			})
 		)
@@ -88,7 +86,7 @@ export class List<
 		this.rowsFiltered = this.rowsAll.map(e => e)
 		this.rowsFiltered.sort((a: ItemRow, b: ItemRow) => a.compare(b))
 		this.listBox = app.box(
-			dom._style({ 'border-top': '.25em solid #fff' }),
+			dom._style({ borderTop: '.25em solid #fff' }),
 			attr.tabindex0,
 			dom.listener('keydown', ev => {
 				if (this.rowsFiltered.length === 0) {
@@ -132,16 +130,16 @@ export class List<
 			...this.rowsFiltered,
 		)
 		this.list = app.box(
-			dom._style({ 'border-bottom': '.25em solid #ddd' }),
+			dom._style({ borderBottom: '.25em solid #ddd' }),
 			dom.div(
-				app.classes.boxPadding,
+				app.looks.boxPadding,
 				dom.h1(
-					classes.title,
+					app.looks.title,
 					title,
 					' ',
 					dom.button(
-						classes.btnSuccess,
-						dom._style({ 'font-weight': 'normal' }),
+						app.looks.btnSuccess,
+						dom._style({ fontWeight: 'normal' }),
 						dom.listener('click', ev => {
 							this.deselect(false)
 							this.loadNew([])

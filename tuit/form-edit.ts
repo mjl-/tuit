@@ -11,15 +11,13 @@ export class FormEdit<Item, ItemRow extends list.ItemRower<Item>> implements typ
 	fieldValues: form.FieldValue[]
 
 	constructor(
-		app: dom.Rooter & types.Saver & types.Loader & types.Classer & types.Boxer & types.StateSaver,
+		app: dom.Rooter & types.Saver & types.Loader & types.Looker & types.Boxer & types.StateSaver,
 		objectName: string,
 		fields: form.Field[],
 		itemRow: list.ItemRower<Item>,
 		save: (object: Item) => Promise<void>,
 		remove: (object: Item) => Promise<void>,
 	) {
-		const classes = app.classes
-
 		const saveSpinBox = dom.span()
 		let saveFieldset: HTMLFieldSetElement
 		const removeSpinBox = dom.span()
@@ -28,16 +26,16 @@ export class FormEdit<Item, ItemRow extends list.ItemRower<Item>> implements typ
 		this.root = app.box(
 			{ ui: 'FormEdit' },
 			dom.div(
-				app.classes.boxPaddingLast,
+				app.looks.boxPaddingLast,
 				dom.h1(
-					classes.title,
+					app.looks.title,
 					functions.titleize(objectName),
 					' ',
 					removeButton = dom.button(
-						classes.btnDanger,
-						dom._style({ 'font-weight': 'normal' }),
+						app.looks.btnDanger,
+						dom._style({ fontWeight: 'normal' }),
 						dom.listener('click', ev => {
-							confirm.confirm(app.root, app.classes, 'Sure?', 'Are you sure you want to remove this ' + objectName + '?', 'Yes, remove ' + objectName)
+							confirm.confirm(app.root, app, 'Sure?', 'Are you sure you want to remove this ' + objectName + '?', 'Yes, remove ' + objectName)
 								.then(() => {
 									// xxx see if we can make this more typesafe
 									const object: any = {}
@@ -68,7 +66,7 @@ export class FormEdit<Item, ItemRow extends list.ItemRower<Item>> implements typ
 							}),
 						),
 						dom.button(
-							classes.btnPrimary,
+							app.looks.btnPrimary,
 							{ type: 'submit' },
 							'Save ' + objectName,
 						),

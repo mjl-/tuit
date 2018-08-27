@@ -1,12 +1,11 @@
 import * as dom from '../dom'
-import * as classes from './classes'
+import * as looks from './looks'
 
 export interface Focuser {
 	focus(): void
 }
 
 export type UI = dom.Rooter & Focuser
-
 
 export type StateWord = (string | StateArray)
 export type State = StateWord[]
@@ -33,8 +32,8 @@ export interface Loader {
 	load: (elem: HTMLElement, fn: () => [Aborter, Promise<HTMLElement[]>], loaded?: () => void) => void
 }
 
-export interface Classer {
-	classes: classes.Classes
+export interface Looker {
+	looks: looks.Looks
 }
 
 export interface Aborter {

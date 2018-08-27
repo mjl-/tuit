@@ -8,21 +8,20 @@ export class FormNew<Item> implements types.UI, types.Stater {
 	fieldValues: form.FieldValue[]
 
 	constructor(
-		app: dom.Rooter & types.Saver & types.Loader & types.Classer & types.Boxer,
+		app: dom.Rooter & types.Saver & types.Loader & types.Looker & types.Boxer,
 		objectName: string,
 		fields: form.Field[],
 		create: (object: Item) => Promise<void>,
 	) {
-		const classes = app.classes
 		const spinBox = dom.span()
 		let fieldset: HTMLFieldSetElement
 		this.fieldValues = []
 		this.root = app.box(
 			{ ui: 'FormNew' },
 			dom.div(
-				app.classes.boxPaddingLast,
+				app.looks.boxPaddingLast,
 				dom.h1(
-					classes.title,
+					app.looks.title,
 					'New ' + objectName
 				),
 				dom.form(
@@ -42,7 +41,7 @@ export class FormNew<Item> implements types.UI, types.Stater {
 							}),
 						),
 						dom.button(
-							classes.btnSuccess,
+							app.looks.btnSuccess,
 							{ type: 'submit' },
 							'Create ' + objectName,
 						),

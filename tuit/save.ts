@@ -1,16 +1,16 @@
 import * as dom from '../dom'
 import * as functions from './functions'
-import * as classes from './classes'
+import * as types from './types'
 
 export const save = (
-	classes: classes.Classes,
+	app: types.Looker,
 	spinBox: HTMLElement,
 	disabler: { disabled: boolean } | null,
 	msg: string,
 	fn: () => Promise<void>,
 	errorHandler: (err: Error) => void,
 ) => {
-	dom.children(spinBox, dom.span(classes.spin))
+	dom.children(spinBox, dom.span(app.looks.spin))
 	if (disabler) {
 		disabler.disabled = true
 	}
@@ -23,7 +23,7 @@ export const save = (
 		.then(() => {
 			const checkmark = dom.span(
 				dom._style({ opacity: 0 }),
-				classes.checkmarkSuccess,
+				app.looks.checkmarkSuccess,
 			)
 			dom.children(spinBox, checkmark)
 			functions.fade(checkmark, .2, () => { })

@@ -10,11 +10,11 @@ export class Tabs implements types.UI, types.Stater {
 	buttons: HTMLButtonElement[]
 	loaded: boolean[]
 
-	constructor(private app: dom.Rooter & types.Saver & types.Loader & types.Classer & types.Boxer & types.StateSaver, public tabs: { label: string, name: string, ui: types.UI & types.Focuser & types.Stater }[]) {
+	constructor(private app: dom.Rooter & types.Saver & types.Loader & types.Looker & types.Boxer & types.StateSaver, public tabs: { label: string, name: string, ui: types.UI & types.Focuser & types.Stater }[]) {
 		this.activeIndex = -1
 		this.buttons = tabs.map((tab, index) =>
 			dom.button(
-				app.classes.groupBtnLight,
+				app.looks.groupBtnLight,
 				dom.listener('click', ev => this.select(index)),
 				tabs[index].label,
 				attr.tabindex0,
@@ -25,10 +25,10 @@ export class Tabs implements types.UI, types.Stater {
 		this.root = app.box(
 			dom.div(
 				dom._style({
-					'border-bottom': '1px solid #ccc',
-					'text-align': 'center',
+					borderBottom: '1px solid #ccc',
+					textAlign: 'center',
 				}),
-				app.classes.boxPadding,
+				app.looks.boxPadding,
 				...this.buttons,
 			),
 			this.selectedBox,
@@ -51,10 +51,10 @@ export class Tabs implements types.UI, types.Stater {
 
 	loadTab(state: types.State, index: number): Promise<void> {
 		if (this.activeIndex >= 0) {
-			this.buttons[this.activeIndex].className = this.app.classes.groupBtnLight.class
+			this.buttons[this.activeIndex].className = this.app.looks.groupBtnLight.className
 		}
 		this.activeIndex = index
-		this.buttons[this.activeIndex].className = this.app.classes.groupBtnPrimary.class
+		this.buttons[this.activeIndex].className = this.app.looks.groupBtnPrimary.className
 		const ui = this.tabs[this.activeIndex].ui
 		this.app.load(this.selectedBox, () => [{}, Promise.resolve([ui.root])])
 		if (this.loaded[index]) {

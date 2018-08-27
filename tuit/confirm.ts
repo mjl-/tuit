@@ -1,6 +1,5 @@
 import * as dom from '../dom'
 import * as types from './types'
-import * as classes from './classes'
 import * as popup from './popup'
 import * as styles from './styles'
 
@@ -9,12 +8,12 @@ export class Confirm implements types.UI {
 
 	private button: HTMLElement
 
-	constructor(classes: classes.Classes, title: string, message: string, action: string, fn: () => void) {
+	constructor(app: types.Looker, title: string, message: string, action: string, fn: () => void) {
 		const spinBox = dom.span()
 		this.root = dom.div(
-			dom.h1(classes.title, title),
+			dom.h1(app.looks.title, title),
 			dom.p(
-				dom._style({ 'white-space': 'pre-wrap' }),
+				dom._style({ whiteSpace: 'pre-wrap' }),
 				message,
 			),
 			dom.br(),
@@ -22,7 +21,7 @@ export class Confirm implements types.UI {
 				styles.textAlign.right,
 				spinBox,
 				this.button = dom.button(
-					classes.btnPrimary,
+					app.looks.btnPrimary,
 					dom.listener('click', ev => fn()),
 					action,
 				),
@@ -35,9 +34,9 @@ export class Confirm implements types.UI {
 	}
 }
 
-export const confirm = (root: HTMLElement, classes: classes.Classes, title: string, message: string, action: string): Promise<void> => {
+export const confirm = (root: HTMLElement, app: types.Looker, title: string, message: string, action: string): Promise<void> => {
 	return new Promise((resolve, reject) => {
-		const confirm = new Confirm(classes, title, message, action, () => {
+		const confirm = new Confirm(app, title, message, action, () => {
 			resolve()
 			close()
 		})

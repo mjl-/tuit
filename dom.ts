@@ -1,3 +1,6 @@
+import * as CSS from './node_modules/csstype/index'
+export { Properties as CSSProperties } from './node_modules/csstype/index'
+
 interface StringDict {
 	[propName: string]: string
 }
@@ -12,7 +15,7 @@ class Listener {
 }
 
 export class Style {
-	constructor(public pairs: StringKeyDict) { }
+	constructor(public props: CSS.Properties) { }
 }
 
 export interface Rooter {
@@ -23,23 +26,34 @@ export const isRooter = (v: any): v is Rooter => {
 	return 'root' in v && v.root instanceof HTMLElement
 }
 
-export type ElemArg = string | Element | Listener | Style | StringDict | Rooter
+export interface ClassNamer {
+	className: string
+}
+
+export function isClassNamer(v: any): v is ClassNamer {
+	return 'className' in v && typeof v['className'] === 'string'
+}
+
+export type ElemArg = string | ClassNamer | Element | Listener | Style | StringDict | Rooter
 
 export const fill = <T extends HTMLElement>(e: T, l: ElemArg[]): T => {
 	l.forEach((c) => {
 		if (typeof c === 'string') {
 			const n = document.createTextNode(c)
 			e.appendChild(n)
+		} else if (c instanceof Element) {
+			e.appendChild(c)
+		} else if (isClassNamer(c)) {
+			e.className = c.className
 		} else if (c instanceof Listener) {
 			e.addEventListener(c.event, c.handler)
 		} else if (c instanceof Style) {
-			for (const key in c.pairs) {
-				e.style.setProperty(key, c.pairs[key])
+			const st = e.style as any // xxx
+			for (const key in <object>c.props) {
+				st[key] = (<any>c.props)[key] // xxx probably not always correct, eg for array values
 			}
 		} else if (isRooter(c)) {
 			e.appendChild(c.root)
-		} else if (c instanceof Element) {
-			e.appendChild(c)
 		} else if (typeof c === 'object' && c !== null && c.constructor === Object) {
 			for (const key in c) {
 				e.setAttribute(key, c[key])
@@ -86,8 +100,8 @@ export function listener(event: string, handler: (event: any) => void): Listener
 	return new Listener(event, handler)
 }
 
-export const _style = (pairs: StringKeyDict) => {
-	return new Style(pairs)
+export const _style = (props: CSS.Properties) => {
+	return new Style(props)
 }
 
 export const children = (elem: HTMLElement, ...kids: (string | Rooter | HTMLElement)[]) => {

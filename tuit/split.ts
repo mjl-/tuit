@@ -8,8 +8,8 @@ export class Split implements dom.Rooter {
 			{ ui: 'SplitChild' },
 			dom._style({
 				display: 'flex',
-				'height': '100%',
-				'overflow-y': 'auto',
+				height: '100%',
+				overflowY: 'auto',
 			}),
 			e,
 		)
@@ -19,9 +19,9 @@ export class Split implements dom.Rooter {
 				dom.div(
 					{ ui: 'SplitBorder' },
 					dom._style({
-						'height': '100%',
+						height: '100%',
 						width: '1px',
-						'background-color': '#ddd',
+						backgroundColor: '#ddd',
 					})
 				)
 			)
@@ -35,8 +35,8 @@ export class Split implements dom.Rooter {
 			dom._style({
 				display: 'flex',
 				height: '100%',
-				'flex-grow': 1,
-				'flex-direction': 'row',
+				flexGrow: 1,
+				flexDirection: 'row',
 			}),
 			...x
 		)

@@ -11,4 +11,4 @@ fmt:
 
 setup:
 	-mkdir -p node_modules/.bin
-	npm install typescript@3.0.1 typescript-formatter@7.2.2
+	npm install typescript@3.0.1 typescript-formatter@7.2.2 csstype@2.5.6

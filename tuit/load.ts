@@ -1,9 +1,8 @@
 import * as dom from '../dom'
 import * as types from './types'
-import * as classes from './classes'
 import * as functions from './functions'
 
-export const load = (classes: classes.Classes, elem: HTMLElement, fn: () => [types.Aborter, Promise<HTMLElement[]>], error: (err: Error, retry: () => void) => void, loaded?: () => void) => {
+export const load = (app: types.Looker, elem: HTMLElement, fn: () => [types.Aborter, Promise<HTMLElement[]>], error: (err: Error, retry: () => void) => void, loaded?: () => void) => {
 	let opacity = 1
 	let loadingShow = 0
 	let elems: HTMLElement[] | null
@@ -50,7 +49,7 @@ export const load = (classes: classes.Classes, elem: HTMLElement, fn: () => [typ
 		let abortElem = dom.span()
 		if (aborter.abort) {
 			abortElem = dom.button(
-				classes.btnSecondary,
+				app.looks.btnSecondary,
 				dom.listener('click', ev => {
 					if (aborter.abort) {
 						aborter.abort()
@@ -63,7 +62,7 @@ export const load = (classes: classes.Classes, elem: HTMLElement, fn: () => [typ
 			functions.middle(
 				dom.div(
 					dom.span('loading...'),
-					dom.span(classes.spin),
+					dom.span(app.looks.spin),
 				),
 				dom.br(),
 				abortElem,
@@ -84,6 +83,6 @@ export const load = (classes: classes.Classes, elem: HTMLElement, fn: () => [typ
 				window.clearInterval(id)
 			}
 			elem.style.opacity = '1'
-			error(err, () => load(classes, elem, fn, error, loaded))
+			error(err, () => load(app, elem, fn, error, loaded))
 		})
 }

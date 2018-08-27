@@ -17,14 +17,14 @@ export interface FieldValue {
 	focusable?: HTMLElement
 }
 
-export const makeFieldValue = (app: types.Classer, field: Field, value?: any): FieldValue => {
+export const makeFieldValue = (app: types.Looker, field: Field, value?: any): FieldValue => {
 	const required: { required: string } | {} = field.required ? { required: '' } : {}
 	const disabled: { disabled: string } | {} = field.readonly ? { disabled: '' } : {}
 
 	switch (field.kind) {
 		case 'line': {
 			const elem = dom.input(
-				app.classes.formInput,
+				app.looks.formInput,
 				{ value: typeof value === 'string' ? value : '' },
 				required,
 				disabled,
@@ -37,7 +37,7 @@ export const makeFieldValue = (app: types.Classer, field: Field, value?: any): F
 		}
 		case 'email': {
 			const elem = dom.input(
-				app.classes.formInput,
+				app.looks.formInput,
 				{ value: typeof value === 'string' ? value : '' },
 				required,
 				{ type: 'email' },
@@ -51,7 +51,7 @@ export const makeFieldValue = (app: types.Classer, field: Field, value?: any): F
 		}
 		case 'number': {
 			const elem = dom.input(
-				app.classes.formInput,
+				app.looks.formInput,
 				{ value: typeof value === 'number' ? '' + value : '' },
 				required,
 				{ type: 'number' },
@@ -65,7 +65,7 @@ export const makeFieldValue = (app: types.Classer, field: Field, value?: any): F
 		}
 		case 'multiline': {
 			const elem = dom.textarea(
-				app.classes.textarea,
+				app.looks.textarea,
 				required,
 				disabled,
 				{ rows: '5' },
@@ -158,7 +158,7 @@ export const makeFieldValue = (app: types.Classer, field: Field, value?: any): F
 				return '' + d.getFullYear() + '-' + (1 + d.getMonth()) + '-' + d.getDate()
 			}
 			const elem = dom.input(
-				app.classes.formInput,
+				app.looks.formInput,
 				{ value: typeof value === 'string' ? formatDate(value) : '' },
 				required,
 				disabled,
