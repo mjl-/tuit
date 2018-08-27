@@ -63,16 +63,10 @@ export class Looks {
 	groupBtnPrimary: Style
 	groupBtnSecondary: Style
 	groupBtnLight: Style
-	navBtnActive: Style
-	navBtnInactive: Style
-	navSearchActive: Style
-	navSearchInactive: Style
 	cell: Style
 	headerCell: Style
 	dayHeaderCell: Style
 	spin: Style
-	typeahead: Style
-	typeaheadOption: Style
 	box: Style
 	listItem: Style
 	listItemSelected: Style
@@ -148,7 +142,7 @@ export class Looks {
 			padding: '0.25em 0',
 			marginBottom: '1.5ex',
 		})
-		this.inlineTitle = createLooks('title', this.title, { display: 'inline' })
+		this.inlineTitle = createLooks('title', this.title, { display: 'inline-block' })
 
 		const inputStyle = {
 			display: 'block',
@@ -307,20 +301,6 @@ export class Looks {
 		}
 
 
-		this.navBtnInactive = createLooks('nav-btn-inactive', {
-			padding: '0.75em 1em',
-			cursor: 'pointer',
-		})
-			.pseudo(':hover', { backgroundColor: '#ddd' })
-		this.navBtnActive = createLooks('nav-btn-active', this.navBtnInactive, {
-			color: 'white',
-			backgroundColor: primaryColor,
-		})
-
-		this.navSearchInactive = createLooks('nav-search-inactive', { padding: '.75em 1em' })
-		this.navSearchActive = createLooks('nav-search-active', this.navSearchInactive, { backgroundColor: primaryColor })
-
-
 		this.cell = createLooks('cell', {
 			verticalAlign: 'top',
 			padding: '.25em',
@@ -369,16 +349,6 @@ export class Looks {
 					}
 				}
 			`)
-
-
-		this.typeahead = createLooks('typeahead', { position: 'relative' })
-		this.typeaheadOption = createLooks('typeahead-option', {
-			padding: '.25em',
-			borderRadius: '.25em',
-			cursor: 'pointer',
-		})
-			.pseudo(':hover', { backgroundColor: '#eee' })
-			.pseudo(':focus', { backgroundColor: '#ddd' })
 
 		this.box = createLooks('box', {
 			flex: '1',

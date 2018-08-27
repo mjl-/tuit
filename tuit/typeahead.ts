@@ -8,8 +8,16 @@ export class TypeaheadOption implements dom.Rooter {
 	root: HTMLElement
 
 	constructor(app: types.Looker, public value: string, typeahead: Typeahead) {
+		const looksTypeaheadOption = app.ensureLooks('typeahead-option', {
+			padding: '.25em',
+			borderRadius: '.25em',
+			cursor: 'pointer',
+		})
+			.pseudo(':hover', { backgroundColor: '#eee' })
+			.pseudo(':focus', { backgroundColor: '#ddd' })
+
 		this.root = dom.div(
-			app.looks.typeaheadOption,
+			looksTypeaheadOption,
 			attr.tabindex0,
 			value,
 			dom.listener('click', ev => typeahead.selected(this)),
@@ -59,6 +67,8 @@ export class Typeahead implements types.UI {
 		private focused: () => void,
 		private blurred: () => void,
 	) {
+		const looksTypeahead = app.ensureLooks('typeahead', { position: 'relative' })
+
 		this.optionsAll = this.values.map(v => new TypeaheadOption(app, v, this))
 		this.optionsFiltered = this.optionsAll
 		this.popoverBox = dom.div()
@@ -94,7 +104,7 @@ export class Typeahead implements types.UI {
 			}),
 		)
 		this.root = dom.div(
-			app.looks.typeahead,
+			looksTypeahead,
 			this.input,
 			this.popoverBox,
 		)
