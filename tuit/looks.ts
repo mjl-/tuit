@@ -45,6 +45,7 @@ export class Looks {
 
 	header: Style
 	title: Style
+	inlineTitle: Style
 	formInput: Style
 	textarea: Style
 	tableInput: Style
@@ -70,6 +71,7 @@ export class Looks {
 	headerCell: Style
 	dayHeaderCell: Style
 	spin: Style
+	typeahead: Style
 	typeaheadOption: Style
 	box: Style
 	listItem: Style
@@ -83,6 +85,8 @@ export class Looks {
 	boxPaddingLast: Style
 	boxMarginLast: Style
 	checkmarkSuccess: Style
+	textWrap: Style
+	alertDanger: Style
 
 	constructor(private style: HTMLStyleElement, private baseClassName: string) {
 		this.uniqueID = ('' + Math.random()).substring(2, 10)
@@ -144,9 +148,7 @@ export class Looks {
 			padding: '0.25em 0',
 			marginBottom: '1.5ex',
 		})
-
-		const roundCornerStyle = { borderRadius: '.25em' }
-
+		this.inlineTitle = createLooks('title', this.title, { display: 'inline' })
 
 		const inputStyle = {
 			display: 'block',
@@ -191,6 +193,8 @@ export class Looks {
 			c.pseudo(':focus', { borderColor: '#999' })
 		}
 
+
+		const roundCornerStyle = { borderRadius: '.25em' }
 
 		const btnStyle = {
 			fontSize: '1em',
@@ -367,6 +371,7 @@ export class Looks {
 			`)
 
 
+		this.typeahead = createLooks('typeahead', { position: 'relative' })
 		this.typeaheadOption = createLooks('typeahead-option', {
 			padding: '.25em',
 			borderRadius: '.25em',
@@ -420,6 +425,17 @@ export class Looks {
 			marginLeft: '.5em',
 		})
 			.pseudo(':after', { content: '"✓"' })
+
+		this.textWrap = createLooks('text-wrap', { whiteSpace: 'pre-wrap' })
+		this.alertDanger = createLooks('alert-danger', {
+			color: '#721c24',
+			backgroundColor: '#f8d7da',
+			borderColor: '#f5c6cb',
+			position: 'relative',
+			padding: '.75em 1.25em',
+			marginBottom: '1em',
+			border: '1px solid transparent',
+		})
 	}
 
 	createLooks(className: string, ...styles: (Style | CSS.Properties)[]): Style {

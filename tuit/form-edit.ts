@@ -1,7 +1,7 @@
 import * as dom from '../dom'
 import * as types from './types'
 import * as list from './list'
-import * as functions from './functions'
+import * as fns from './fns'
 import * as confirm from './confirm'
 import * as form from './form'
 
@@ -27,15 +27,16 @@ export class FormEdit<Item, ItemRow extends list.ItemRower<Item>> implements typ
 			{ ui: 'FormEdit' },
 			dom.div(
 				app.looks.boxPaddingLast,
-				dom.h1(
-					app.looks.title,
-					functions.titleize(objectName),
+				dom.div(
+					dom.h1(
+						app.looks.inlineTitle,
+						fns.titleize(objectName),
+					),
 					' ',
 					removeButton = dom.button(
 						app.looks.btnDanger,
-						dom._style({ fontWeight: 'normal' }),
 						dom.listener('click', ev => {
-							confirm.confirm(app.root, app, 'Sure?', 'Are you sure you want to remove this ' + objectName + '?', 'Yes, remove ' + objectName)
+							confirm.confirm(app, 'Sure?', 'Are you sure you want to remove this ' + objectName + '?', 'Yes, remove ' + objectName)
 								.then(() => {
 									// xxx see if we can make this more typesafe
 									const object: any = {}

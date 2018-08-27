@@ -13,7 +13,7 @@ export class Confirm implements types.UI {
 		this.root = dom.div(
 			dom.h1(app.looks.title, title),
 			dom.p(
-				dom._style({ whiteSpace: 'pre-wrap' }),
+				app.looks.textWrap,
 				message,
 			),
 			dom.br(),
@@ -34,12 +34,12 @@ export class Confirm implements types.UI {
 	}
 }
 
-export const confirm = (root: HTMLElement, app: types.Looker, title: string, message: string, action: string): Promise<void> => {
+export const confirm = (app: types.Looker & dom.Rooter, title: string, message: string, action: string): Promise<void> => {
 	return new Promise((resolve, reject) => {
 		const confirm = new Confirm(app, title, message, action, () => {
 			resolve()
 			close()
 		})
-		const close = popup.popup(root, popup.PopupSize.Small, confirm, reject)
+		const close = popup.popup(app, popup.PopupSize.Small, confirm, reject)
 	})
 }

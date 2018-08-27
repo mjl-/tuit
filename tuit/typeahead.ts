@@ -10,7 +10,6 @@ export class TypeaheadOption implements dom.Rooter {
 	constructor(app: types.Looker, public value: string, typeahead: Typeahead) {
 		this.root = dom.div(
 			app.looks.typeaheadOption,
-			dom._style({ padding: '0.25em' }),
 			attr.tabindex0,
 			value,
 			dom.listener('click', ev => typeahead.selected(this)),
@@ -95,7 +94,7 @@ export class Typeahead implements types.UI {
 			}),
 		)
 		this.root = dom.div(
-			dom._style({ position: 'relative' }),
+			app.looks.typeahead,
 			this.input,
 			this.popoverBox,
 		)

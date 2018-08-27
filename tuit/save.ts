@@ -1,5 +1,5 @@
 import * as dom from '../dom'
-import * as functions from './functions'
+import * as fns from './fns'
 import * as types from './types'
 
 export const save = (
@@ -26,8 +26,8 @@ export const save = (
 				app.looks.checkmarkSuccess,
 			)
 			dom.children(spinBox, checkmark)
-			functions.fade(checkmark, .2, () => { })
-			setTimeout(() => functions.fade(checkmark, -.2, () => dom.children(spinBox)), 1000)
+			fns.fade(checkmark, .2, () => { })
+			setTimeout(() => fns.fade(checkmark, -.2, () => dom.children(spinBox)), 1000)
 			_finally()
 		})
 		.catch((err: Error) => {

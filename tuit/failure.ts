@@ -1,6 +1,6 @@
 import * as dom from '../dom'
 import * as types from './types'
-import * as functions from './functions'
+import * as fns from './fns'
 
 export class Failure implements types.UI {
 	root: HTMLElement
@@ -8,10 +8,12 @@ export class Failure implements types.UI {
 	constructor(app: types.Looker, message: string) {
 		this.root = dom.div(
 			dom.h1(app.looks.title, 'Error'),
-			dom.p(
-				dom._style({ whiteSpace: 'pre-wrap' }),
-				dom._style({ color: 'red' }),
-				functions.titleize(message),
+			dom.div(
+				app.looks.alertDanger,
+				dom.div(
+					app.looks.textWrap,
+					fns.titleize(message),
+				)
 			),
 		)
 	}

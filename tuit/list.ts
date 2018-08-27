@@ -3,7 +3,7 @@ import * as types from './types'
 import * as looks from './looks'
 import * as attr from './attr'
 import * as split from './split'
-import * as functions from './functions'
+import * as fns from './fns'
 
 export const rowMarkSelected = (looks: looks.Looks, ui: HTMLElement, primary: HTMLElement, secondary: HTMLElement) => {
 	ui.className = looks.listItemSelected.className
@@ -36,6 +36,11 @@ export interface Selecter<Item, ItemRow extends ItemRower<Item>> {
 	selectClick: (itemRow: ItemRow) => void
 }
 
+const styles = {
+	listBox: { borderTop: '.25em solid #fff' },
+	list: { borderBottom: '.25em solid #ddd' },
+}
+
 export class List<
 	Item,
 	ItemRow extends dom.Rooter & ItemRower<Item>,
@@ -62,6 +67,9 @@ export class List<
 		private newClass: () => ItemNew,
 		private viewClass: (itemRow: ItemRow) => ItemView,
 	) {
+		const looksListBox = app.ensureLooks('list-box', styles.listBox)
+		const looksList = app.ensureLooks('list', styles.list)
+
 		this.search = dom.input(
 			app.looks.searchInput,
 			{ placeholder: 'search...' },
@@ -86,7 +94,7 @@ export class List<
 		this.rowsFiltered = this.rowsAll.map(e => e)
 		this.rowsFiltered.sort((a: ItemRow, b: ItemRow) => a.compare(b))
 		this.listBox = app.box(
-			dom._style({ borderTop: '.25em solid #fff' }),
+			looksListBox,
 			attr.tabindex0,
 			dom.listener('keydown', ev => {
 				if (this.rowsFiltered.length === 0) {
@@ -130,16 +138,17 @@ export class List<
 			...this.rowsFiltered,
 		)
 		this.list = app.box(
-			dom._style({ borderBottom: '.25em solid #ddd' }),
+			looksList,
 			dom.div(
 				app.looks.boxPadding,
-				dom.h1(
-					app.looks.title,
-					title,
+				dom.div(
+					dom.h1(
+						app.looks.inlineTitle,
+						title,
+					),
 					' ',
 					dom.button(
 						app.looks.btnSuccess,
-						dom._style({ fontWeight: 'normal' }),
 						dom.listener('click', ev => {
 							this.deselect(false)
 							this.loadNew([])
@@ -152,9 +161,9 @@ export class List<
 			),
 			this.listBox,
 		)
-		this.noSelection = functions.middle(dom.div('Choose from the list'))
+		this.noSelection = fns.middle(app, dom.div('Choose from the list'))
 		this.detailBox = app.box()
-		const splitUI = new split.Split(this.list, this.detailBox)
+		const splitUI = new split.Split(app, this.list, this.detailBox)
 		this.root = app.box(
 			{ ui: 'ItemList' },
 			splitUI,

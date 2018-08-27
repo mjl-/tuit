@@ -2,6 +2,11 @@ import * as dom from '../dom'
 import * as types from './types'
 import * as attr from './attr'
 
+const tabsBoxStyle: dom.CSSProperties = {
+	borderBottom: '1px solid #ccc',
+	textAlign: 'center',
+}
+
 export class Tabs implements types.UI, types.Stater {
 	root: HTMLElement
 
@@ -11,6 +16,8 @@ export class Tabs implements types.UI, types.Stater {
 	loaded: boolean[]
 
 	constructor(private app: dom.Rooter & types.Saver & types.Loader & types.Looker & types.Boxer & types.StateSaver, public tabs: { label: string, name: string, ui: types.UI & types.Focuser & types.Stater }[]) {
+		const looksTabsBox = app.ensureLooks('tabs-box', tabsBoxStyle)
+
 		this.activeIndex = -1
 		this.buttons = tabs.map((tab, index) =>
 			dom.button(
@@ -24,12 +31,11 @@ export class Tabs implements types.UI, types.Stater {
 		this.selectedBox = app.box()
 		this.root = app.box(
 			dom.div(
-				dom._style({
-					borderBottom: '1px solid #ccc',
-					textAlign: 'center',
-				}),
-				app.looks.boxPadding,
-				...this.buttons,
+				looksTabsBox,
+				dom.div(
+					app.looks.boxPadding,
+					...this.buttons,
+				),
 			),
 			this.selectedBox,
 		)

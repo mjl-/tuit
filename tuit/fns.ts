@@ -42,9 +42,23 @@ export const box = (app: types.Looker, ...l: dom.ElemArg[]) => {
 	return e
 }
 
-export const middle = (...kids: HTMLElement[]) => {
-	return dom.div({ style: 'display: flex; height: 100%; text-align: center' },
-		dom.div({ 'style': 'flex-grow: 1; align-self: center' },
+
+const middleBoxStyle: dom.CSSProperties = {
+	display: 'flex',
+	height: '100%',
+	textAlign: 'center',
+}
+const middleStyle: dom.CSSProperties = {
+	flexGrow: 1,
+	alignSelf: 'center',
+}
+
+export const middle = (app: types.Looker, ...kids: HTMLElement[]) => {
+	const looksMiddleBox = app.ensureLooks('middle-box', middleBoxStyle)
+	const looksMiddle = app.ensureLooks('middle', middleStyle)
+
+	return dom.div(looksMiddleBox,
+		dom.div(looksMiddle,
 			...kids,
 		),
 	)

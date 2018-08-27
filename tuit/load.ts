@@ -1,6 +1,6 @@
 import * as dom from '../dom'
 import * as types from './types'
-import * as functions from './functions'
+import * as fns from './fns'
 
 export const load = (app: types.Looker, elem: HTMLElement, fn: () => [types.Aborter, Promise<HTMLElement[]>], error: (err: Error, retry: () => void) => void, loaded?: () => void) => {
 	let opacity = 1
@@ -21,7 +21,7 @@ export const load = (app: types.Looker, elem: HTMLElement, fn: () => [types.Abor
 			}
 			elem.style.opacity = '0'
 			dom.children(elem, ...elems)
-			functions.fade(elem, .25, () => {
+			fns.fade(elem, .25, () => {
 				if (loaded) {
 					loaded()
 				}
@@ -59,7 +59,8 @@ export const load = (app: types.Looker, elem: HTMLElement, fn: () => [types.Abor
 			)
 		}
 		dom.children(elem,
-			functions.middle(
+			fns.middle(
+				app,
 				dom.div(
 					dom.span('loading...'),
 					dom.span(app.looks.spin),
