@@ -34,14 +34,14 @@ export class FormEdit<Item> implements types.UI, types.Stater {
 					' ',
 					removeButton = dom.button(
 						app.looks.btnDanger,
-						dom.listen('click', ev => {
-							confirm.confirm(app, 'Sure?', 'Are you sure you want to remove this ' + objectName + '?', 'Yes, remove ' + objectName)
-								.then(() => {
-									// xxx see if we can make this more typesafe
-									const object: any = {}
-									this.fieldValues.forEach((fv, index) => object[fields[index].name] = fv.value())
-									app.save(removeSpinBox, removeButton, 'removing ' + objectName, () => remove(object as Item))
-								})
+						dom.listen('click', async ev => {
+							const confirmed = await confirm.confirm(app, 'Sure?', 'Are you sure you want to remove this ' + objectName + '?', 'Yes, remove ' + objectName)
+							if (confirmed) {
+								// xxx see if we can make this more typesafe
+								const object: any = {}
+								this.fieldValues.forEach((fv, index) => object[fields[index].name] = fv.value())
+								app.save(removeSpinBox, removeButton, 'removing ' + objectName, () => remove(object as Item))
+							}
 						}),
 						'remove'
 					),

@@ -1,6 +1,10 @@
 import * as dom from '../dom'
 import * as types from './types'
 
+export const delay = async (ms: number): Promise<void> => {
+	await new Promise(resolve => setTimeout(resolve, ms))
+}
+
 export const titleize = (s: string) => s.substring(0, 1).toUpperCase() + s.substring(1)
 
 export const parseState = (): types.State => {
@@ -24,16 +28,18 @@ export const parseState = (): types.State => {
 	return r
 }
 
-export const fade = (elem: HTMLElement, step: number, done: () => void) => {
-	let opacity = step < 0 ? 1 : 0
-	let id = window.setInterval(() => {
-		opacity += step
-		elem.style.opacity = '' + opacity
-		if (opacity <= 0 || opacity >= 1) {
-			window.clearInterval(id)
-			done()
-		}
-	}, 16)
+export const fade = (elem: HTMLElement, step: number): Promise<void> => {
+	return new Promise(resolve => {
+		let opacity = Math.max(0, Math.min(1, parseFloat(elem.style.opacity || '1')))
+		let id = window.setInterval(() => {
+			opacity += step
+			elem.style.opacity = '' + opacity
+			if (opacity <= 0 || opacity >= 1) {
+				window.clearInterval(id)
+				resolve()
+			}
+		}, 16)
+	})
 }
 
 export const box = (app: types.Looker, ...l: dom.ElemArg0[]) => {

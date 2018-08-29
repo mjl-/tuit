@@ -99,8 +99,8 @@ export const popup = (app: types.Looker & dom.Rooter, size: PopupSize, view: typ
 	)
 	app.root.appendChild(bg)
 	app.root.appendChild(popup)
-	fns.fade(bg, .25, () => { })
-	fns.fade(popup, .25, () => { })
+	fns.fade(bg, .25)
+	fns.fade(popup, .25)
 	closeButton.focus() // in case view.focus() doesn't set a focus
 	view.focus()
 	return close

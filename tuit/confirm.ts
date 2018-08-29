@@ -34,12 +34,13 @@ export class Confirm implements types.UI {
 	}
 }
 
-export const confirm = (app: types.Looker & dom.Rooter, title: string, message: string, action: string): Promise<void> => {
-	return new Promise((resolve, reject) => {
+// Ask for confirmation. Promise result is the answer.
+export const confirm = (app: types.Looker & dom.Rooter, title: string, message: string, action: string): Promise<boolean> => {
+	return new Promise((resolve) => {
 		const confirm = new Confirm(app, title, message, action, () => {
-			resolve()
+			resolve(true)
 			close()
 		})
-		const close = popup.popup(app, popup.PopupSize.Small, confirm, reject)
+		const close = popup.popup(app, popup.PopupSize.Small, confirm, () => resolve(false))
 	})
 }

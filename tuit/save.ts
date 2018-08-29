@@ -1,15 +1,16 @@
 import * as dom from '../dom'
 import * as fns from './fns'
 import * as types from './types'
+import * as load from './load'
 
-export const save = (
+export const save = async (
 	app: types.Looker,
 	spinBox: HTMLElement,
 	disabler: { disabled: boolean } | null,
 	msg: string,
 	fn: () => Promise<void>,
-	errorHandler: (err: Error) => void,
-) => {
+	errorHandler: (err: Error) => Promise<void>,
+): Promise<void> => {
 	dom.children(spinBox, dom.span(app.looks.spin))
 	if (disabler) {
 		disabler.disabled = true
@@ -19,19 +20,16 @@ export const save = (
 			disabler.disabled = false
 		}
 	}
-	fn()
-		.then(() => {
-			const checkmark = dom.span(
-				dom._style({ opacity: 0 }),
-				app.looks.checkmarkSuccess,
-			)
-			dom.children(spinBox, checkmark)
-			fns.fade(checkmark, .2, () => { })
-			setTimeout(() => fns.fade(checkmark, -.2, () => dom.children(spinBox)), 1000)
-			_finally()
-		})
-		.catch((err: Error) => {
-			errorHandler(err)
-			_finally()
-		})
+	try {
+		await fn()
+	} catch (err) {
+		await errorHandler(err)
+	}
+
+	load.reveal(spinBox, dom.span(app.looks.checkmarkSuccess))
+	_finally()
+
+	fns.delay(1000)
+		.then(() => fns.fade(spinBox, -.2))
+		.then(() => dom.children(spinBox))
 }

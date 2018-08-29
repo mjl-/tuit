@@ -4,6 +4,7 @@ import * as looks from './looks'
 import * as attr from './attr'
 import * as split from './split'
 import * as fns from './fns'
+import * as load from './load'
 
 export const rowMarkSelected = (looks: looks.Looks, ui: HTMLElement, primary: HTMLElement, secondary: HTMLElement) => {
 	ui.className = looks.listItemSelected.className
@@ -171,12 +172,12 @@ export class List<
 		)
 	}
 
-	loadNew(state: types.State): Promise<void> {
+	async loadNew(state: types.State): Promise<void> {
 		const newUI = this.newClass()
 		this.newUI = newUI
-		const p = newUI.loadState(state)
-		this.app.load(this.detailBox, () => [{}, Promise.resolve([newUI.root])], () => newUI.focus())
-		return p
+		await newUI.loadState(state)
+		load.reveal(this.detailBox, newUI.root)
+		newUI.focus()
 	}
 
 	loadState(state: types.State): Promise<void> {
@@ -242,7 +243,7 @@ export class List<
 		}
 	}
 
-	loadItem(state: types.State, ir: ItemRow): Promise<void> {
+	async loadItem(state: types.State, ir: ItemRow): Promise<void> {
 		this.newUI = undefined
 		if (this.selected) {
 			this.selected.markUnselected()
@@ -250,10 +251,8 @@ export class List<
 		this.selected = ir
 		this.selected.markSelected()
 		this.viewUI = this.viewClass(ir)
-		const p = this.viewUI.loadState(state)
-		const viewUI = this.viewUI
-		this.app.load(this.detailBox, () => [{}, Promise.resolve([viewUI.root])])
-		return p
+		await this.viewUI.loadState(state)
+		load.reveal(this.detailBox, this.viewUI.root)
 	}
 
 	select(ir: ItemRow) {
@@ -261,14 +260,14 @@ export class List<
 		this.app.saveState()
 	}
 
-	deselect(load: boolean) {
+	async deselect(loadDetail: boolean): Promise<void> {
 		if (this.selected) {
 			this.selected.markUnselected()
 		}
 		this.selected = undefined
 		this.viewUI = undefined
-		if (load) {
-			this.app.load(this.detailBox, () => [{}, Promise.resolve([this.noSelection])])
+		if (loadDetail) {
+			load.reveal(this.detailBox, this.noSelection)
 			this.search.focus()
 		}
 		this.app.saveState()

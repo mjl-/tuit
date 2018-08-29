@@ -1,6 +1,7 @@
 import * as dom from '../dom'
 import * as types from './types'
 import * as attr from './attr'
+import * as load from './load'
 
 const tabsBoxStyle: dom.CSSProperties = {
 	borderBottom: '1px solid #ccc',
@@ -41,13 +42,13 @@ export class Tabs implements types.UI, types.Stater {
 		)
 	}
 
-	openTab(name: string): Promise<types.UI & types.Focuser & types.Stater> {
+	async openTab(name: string): Promise<types.UI & types.Focuser & types.Stater> {
 		const index = this.tabs.findIndex(tab => tab.name === name)
 		if (index < 0) {
 			return Promise.reject({ message: 'cannot find tab' })
 		}
-		return this.loadTab([], index)
-			.then(() => this.tabs[index].ui)
+		await this.loadTab([], index)
+		return this.tabs[index].ui
 	}
 
 	select(index: number) {
@@ -55,19 +56,19 @@ export class Tabs implements types.UI, types.Stater {
 		this.app.saveState()
 	}
 
-	loadTab(state: types.State, index: number): Promise<void> {
+	async loadTab(state: types.State, index: number): Promise<void> {
 		if (this.activeIndex >= 0) {
 			this.buttons[this.activeIndex].className = this.app.looks.groupBtnLight.className
 		}
 		this.activeIndex = index
 		this.buttons[this.activeIndex].className = this.app.looks.groupBtnPrimary.className
-		const ui = this.tabs[this.activeIndex].ui
-		this.app.load(this.selectedBox, () => [{}, Promise.resolve([ui.root])])
+		const activeTab = this.tabs[this.activeIndex]
+		await load.reveal(this.selectedBox, activeTab.ui.root)
 		if (this.loaded[index]) {
-			return Promise.resolve()
+			return
 		}
 		this.loaded[index] = true
-		return ui.loadState(state)
+		return activeTab.ui.loadState(state)
 	}
 
 	focus() {
