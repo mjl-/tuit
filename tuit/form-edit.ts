@@ -1,11 +1,10 @@
 import * as dom from '../dom'
 import * as types from './types'
-import * as list from './list'
 import * as fns from './fns'
 import * as confirm from './confirm'
 import * as form from './form'
 
-export class FormEdit<Item, ItemRow extends list.ItemRower<Item>> implements types.UI, types.Stater {
+export class FormEdit<Item> implements types.UI, types.Stater {
 	root: HTMLElement
 
 	fieldValues: form.FieldValue[]
@@ -14,7 +13,7 @@ export class FormEdit<Item, ItemRow extends list.ItemRower<Item>> implements typ
 		app: dom.Rooter & types.Saver & types.Loader & types.Looker & types.Boxer & types.StateSaver,
 		objectName: string,
 		fields: form.Field[],
-		itemRow: list.ItemRower<Item>,
+		item: Item,
 		save: (object: Item) => Promise<void>,
 		remove: (object: Item) => Promise<void>,
 	) {
@@ -59,7 +58,6 @@ export class FormEdit<Item, ItemRow extends list.ItemRower<Item>> implements typ
 					saveFieldset = dom.fieldset(
 						dom.div(
 							...fields.map(f => {
-								const item: Item = itemRow.item
 								const v: any = (<any>item)[f.name]
 								const fv = form.makeFieldValue(app, f, v)
 								this.fieldValues.push(fv)
@@ -87,7 +85,7 @@ export class FormEdit<Item, ItemRow extends list.ItemRower<Item>> implements typ
 		}
 	}
 
-	loadState(state: types.State) {
+	loadState(state: types.State): Promise<void> {
 		return Promise.resolve()
 	}
 

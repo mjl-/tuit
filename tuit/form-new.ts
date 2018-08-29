@@ -8,7 +8,7 @@ export class FormNew<Item> implements types.UI, types.Stater {
 	fieldValues: form.FieldValue[]
 
 	constructor(
-		app: dom.Rooter & types.Saver & types.Loader & types.Looker & types.Boxer,
+		app: dom.Rooter & types.Saver & types.Loader & types.Looker & types.Boxer & types.StateSaver,
 		objectName: string,
 		fields: form.Field[],
 		create: (object: Item) => Promise<void>,
@@ -30,7 +30,7 @@ export class FormNew<Item> implements types.UI, types.Stater {
 						// xxx see if we can make this more typesafe
 						const object: any = {}
 						this.fieldValues.forEach((fv, index) => object[fields[index].name] = fv.value())
-						app.save(spinBox, fieldset, 'Adding ' + objectName, () => create(object as Item))
+						app.save(spinBox, fieldset, 'adding ' + objectName, () => create(object as Item))
 					}),
 					fieldset = dom.fieldset(
 						dom.div(
