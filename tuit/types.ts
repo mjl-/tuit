@@ -43,5 +43,5 @@ export interface Aborter {
 }
 
 export interface Boxer {
-	box: (...l: dom.ElemArg[]) => HTMLElement
+	box: (...l: dom.ElemArg0[]) => HTMLElement
 }

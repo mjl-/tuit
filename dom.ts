@@ -35,8 +35,10 @@ export function isClassNamer(v: any): v is ClassNamer {
 }
 
 export type ElemArg = string | ClassNamer | Element | Listener | Style | StringDict | Rooter
+export type ElemArg0 = string | Element | Listener | Style | StringDict | Rooter
 
 export const fill = <T extends HTMLElement>(e: T, l: ElemArg[]): T => {
+	let haveClass = false
 	l.forEach((c) => {
 		if (typeof c === 'string') {
 			const n = document.createTextNode(c)
@@ -44,7 +46,11 @@ export const fill = <T extends HTMLElement>(e: T, l: ElemArg[]): T => {
 		} else if (c instanceof Element) {
 			e.appendChild(c)
 		} else if (isClassNamer(c)) {
+			if (haveClass) {
+				throw new Error('duplicate className')
+			}
 			e.className = c.className
+			haveClass = true
 		} else if (c instanceof Listener) {
 			e.addEventListener(c.event, c.handler)
 		} else if (c instanceof Style) {

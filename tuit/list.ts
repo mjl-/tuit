@@ -68,7 +68,6 @@ export class List<
 		private viewClass: (itemRow: ItemRow) => ItemView,
 	) {
 		const looksListBox = app.ensureLooks('list-box', styles.listBox)
-		const looksList = app.ensureLooks('list', styles.list)
 
 		this.search = dom.input(
 			app.looks.searchInput,
@@ -94,51 +93,53 @@ export class List<
 		this.rowsFiltered = this.rowsAll.map(e => e)
 		this.rowsFiltered.sort((a: ItemRow, b: ItemRow) => a.compare(b))
 		this.listBox = app.box(
-			looksListBox,
-			attr.tabindex0,
-			dom.listen('keydown', ev => {
-				if (this.rowsFiltered.length === 0) {
-					return
-				}
-
-				const selectOffset = (offset: number) => {
-					ev.preventDefault()
-					const index = Math.min(this.rowsFiltered.length - 1, Math.max(0, this.rowsFiltered.findIndex(ir => ir === this.selected) + offset))
-					if (index >= 0 && index < this.rowsFiltered.length) {
-						this.select(this.rowsFiltered[index])
-					}
-				}
-
-				switch (ev.key) {
-					case 'ArrowUp':
-						if (this.selected) {
-							selectOffset(-1)
-						} else {
-							this.select(this.rowsFiltered[this.rowsFiltered.length - 1])
-						}
-						break
-					case 'ArrowDown':
-						if (this.selected) {
-							selectOffset(1)
-						} else {
-							this.select(this.rowsFiltered[0])
-						}
-						break
-					case 'Enter':
-						const e = this.rowsFiltered.find(ur => ur.root === document.activeElement)
-						if (e) {
-							this.selectClick(e)
-						}
-						break
-					default:
+			dom.div(
+				looksListBox,
+				attr.tabindex0,
+				dom.listen('keydown', ev => {
+					if (this.rowsFiltered.length === 0) {
 						return
-				}
-				ev.preventDefault()
-			}),
-			...this.rowsFiltered,
+					}
+
+					const selectOffset = (offset: number) => {
+						ev.preventDefault()
+						const index = Math.min(this.rowsFiltered.length - 1, Math.max(0, this.rowsFiltered.findIndex(ir => ir === this.selected) + offset))
+						if (index >= 0 && index < this.rowsFiltered.length) {
+							this.select(this.rowsFiltered[index])
+						}
+					}
+
+					switch (ev.key) {
+						case 'ArrowUp':
+							if (this.selected) {
+								selectOffset(-1)
+							} else {
+								this.select(this.rowsFiltered[this.rowsFiltered.length - 1])
+							}
+							break
+						case 'ArrowDown':
+							if (this.selected) {
+								selectOffset(1)
+							} else {
+								this.select(this.rowsFiltered[0])
+							}
+							break
+						case 'Enter':
+							const e = this.rowsFiltered.find(ur => ur.root === document.activeElement)
+							if (e) {
+								this.selectClick(e)
+							}
+							break
+						default:
+							return
+					}
+					ev.preventDefault()
+				}),
+				...this.rowsFiltered,
+			)
 		)
 		this.list = app.box(
-			looksList,
+			dom._style(styles.list),
 			dom.div(
 				app.looks.boxPadding,
 				dom.div(
