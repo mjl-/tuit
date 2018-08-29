@@ -66,6 +66,12 @@ export const popup = (app: types.Looker & dom.Rooter, size: PopupSize, view: typ
 	const closeButton = dom.div(
 		looksPopupCloseBtn,
 		attr.tabindex0,
+		dom.listen('keydown', ev => {
+			if (ev.key === 'Enter') {
+				close()
+				canceled()
+			}
+		}),
 		dom.listen('click', ev => {
 			close()
 			canceled()
