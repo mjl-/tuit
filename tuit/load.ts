@@ -50,7 +50,7 @@ export const load = (app: types.Looker, elem: HTMLElement, fn: () => [types.Abor
 		if (aborter.abort) {
 			abortElem = dom.button(
 				app.looks.btnSecondary,
-				dom.listener('click', ev => {
+				dom.listen('click', ev => {
 					if (aborter.abort) {
 						aborter.abort()
 					}

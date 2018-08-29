@@ -22,7 +22,7 @@ export class Tabs implements types.UI, types.Stater {
 		this.buttons = tabs.map((tab, index) =>
 			dom.button(
 				app.looks.groupBtnLight,
-				dom.listener('click', ev => this.select(index)),
+				dom.listen('click', ev => this.select(index)),
 				tabs[index].label,
 				attr.tabindex0,
 			)

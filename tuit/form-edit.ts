@@ -35,7 +35,7 @@ export class FormEdit<Item, ItemRow extends list.ItemRower<Item>> implements typ
 					' ',
 					removeButton = dom.button(
 						app.looks.btnDanger,
-						dom.listener('click', ev => {
+						dom.listen('click', ev => {
 							confirm.confirm(app, 'Sure?', 'Are you sure you want to remove this ' + objectName + '?', 'Yes, remove ' + objectName)
 								.then(() => {
 									// xxx see if we can make this more typesafe
@@ -49,7 +49,7 @@ export class FormEdit<Item, ItemRow extends list.ItemRower<Item>> implements typ
 					removeSpinBox,
 				),
 				dom.form(
-					dom.listener('submit', ev => {
+					dom.listen('submit', ev => {
 						ev.preventDefault()
 						// xxx see if we can make this more typesafe
 						const object: any = {}

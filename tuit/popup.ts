@@ -66,7 +66,7 @@ export const popup = (app: types.Looker & dom.Rooter, size: PopupSize, view: typ
 	const closeButton = dom.div(
 		looksPopupCloseBtn,
 		attr.tabindex0,
-		dom.listener('click', ev => {
+		dom.listen('click', ev => {
 			close()
 			canceled()
 		}),
@@ -74,7 +74,7 @@ export const popup = (app: types.Looker & dom.Rooter, size: PopupSize, view: typ
 	)
 	const bg = dom.div(
 		looksPopupBg,
-		dom.listener('click', ev => {
+		dom.listen('click', ev => {
 			close()
 			canceled()
 		}),
@@ -83,7 +83,7 @@ export const popup = (app: types.Looker & dom.Rooter, size: PopupSize, view: typ
 		looksPopup,
 		closeButton,
 		view,
-		dom.listener('keyup', ev => {
+		dom.listen('keyup', ev => {
 			if (ev.key === 'Escape') {
 				ev.stopPropagation()
 				close()

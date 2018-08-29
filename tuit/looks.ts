@@ -1,4 +1,52 @@
 import * as CSS from '../node_modules/csstype/index'
+import * as dom from '../dom'
+
+export const success = {
+	fg: '#fff',
+	bg: '#28a745',
+	bgHover: '#218838',
+	bgActive: '#1e7e34',
+	border: '#28a745',
+	borderHover: '#1e7e34',
+	borderActive: '#1c7430',
+}
+export const danger = {
+	fg: '#fff',
+	bg: '#dc3545',
+	bgHover: '#c82333',
+	bgActive: '#bd2130',
+	border: '#dc3545',
+	borderHover: '#bd2130',
+	borderActive: '#b21f2d',
+}
+export const primary = {
+	fg: '#fff',
+	bg: '#007bff',
+	bgHover: '#0069d9',
+	bgActive: '#0062cc',
+	border: '#007bff',
+	borderHover: '#0062cc',
+	borderActive: '#005cbf',
+}
+export const secondary = {
+	fg: '#fff',
+	bg: '#6c757d',
+	bgHover: '#5a6268',
+	bgActive: '#545b62',
+	border: '#6c757d',
+	borderHover: '#545b62',
+	borderActive: '#4e555b',
+}
+export const light = {
+	fg: '#212529',
+	bg: '#f8f9fa',
+	bgHover: '#e2e6ea',
+	bgActive: '#dae0e5',
+	border: '#f8f9fa',
+	borderHover: '#dae0e5',
+	borderActive: '#d3d9df',
+}
+
 
 export class Style {
 	readonly propsList: CSS.Properties[]
@@ -42,6 +90,7 @@ export class Style {
 export class Looks {
 	uniqueID: string
 	selectorPrefix: string
+	style: HTMLStyleElement
 
 	header: Style
 	title: Style
@@ -82,13 +131,15 @@ export class Looks {
 	textWrap: Style
 	alertDanger: Style
 
-	constructor(private style: HTMLStyleElement, private baseClassName: string) {
+	constructor(app: dom.Rooter, private baseClassName: string) {
+		this.style = dom.style({ type: 'text/css' })
+		document.head.appendChild(this.style) // todo: figure out how to insert this inside mtpt and make it work
 		this.uniqueID = ('' + Math.random()).substring(2, 10)
 		this.selectorPrefix = '.' + this.baseClassName + '-' + this.uniqueID + ' '
 
 
 		const addResetRule = (selector: string, props: CSS.Properties) => {
-			const sheet = style.sheet as CSSStyleSheet
+			const sheet = this.style.sheet as CSSStyleSheet
 			const selectorText = this.selectorPrefix + selector
 			const index = sheet.cssRules.length
 			sheet.insertRule(selectorText + '{}', index)
@@ -121,15 +172,10 @@ export class Looks {
 
 
 		const createLooks = (className: string, ...styles: (Style | CSS.Properties)[]): Style => {
-			return this.createLooks(className, ...styles)
+			return this.create(false, className, ...styles)
 		}
-
-		const copyLooks = (className: string, fromStyle: Style): Style => {
-			const r = this.createLooks(className, ...fromStyle.propsList)
-			for (const tup of fromStyle.pseudoStyles) {
-				r.pseudo(tup.name, ...tup.propsList)
-			}
-			return r
+		const copyLooks = (className: string, ...styles: (Style | CSS.Properties)[]): Style => {
+			return this.create(true, className, ...styles)
 		}
 
 		this.header = createLooks('header', {
@@ -142,7 +188,7 @@ export class Looks {
 			padding: '0.25em 0',
 			marginBottom: '1.5ex',
 		})
-		this.inlineTitle = createLooks('title', this.title, { display: 'inline-block' })
+		this.inlineTitle = createLooks('inline-title', this.title, { display: 'inline-block' })
 
 		const inputStyle = {
 			display: 'block',
@@ -188,107 +234,44 @@ export class Looks {
 		}
 
 
-		const roundCornerStyle = { borderRadius: '.25em' }
-
 		const btnStyle = {
 			fontSize: '1em',
 			border: 'none',
 			padding: '0em 0.6em 0.15em',
 			cursor: 'pointer',
+			borderRadius: '.25em',
 		}
 
-		const successColor = '#28a745'
-		const dangerColor = '#dc3545'
-		const primaryColor = '#007bff'
-		const secondaryColor = '#6c757d'
-		const lightColor = '#f8f9fa'
+		const hex2rgba = (hex: string, alpha: number) => {
+			const parse = (o: number) => parseInt(hex.substr(1 + o, 2), 16)
+			const [r, g, b] = [parse(0), parse(2), parse(4)]
+			return 'rgba(' + [r, g, b].map(v => '' + v).join(', ') + ', ' + alpha + ')'
+		}
 
-		this.btnSuccess = createLooks('btn-success', btnStyle, roundCornerStyle, {
-			color: '#fff',
-			backgroundColor: successColor,
-			borderColor: successColor,
-		})
-			.pseudo(':active', {
-				backgroundColor: '#1e7e34',
-				borderColor: '#1c7430',
+		const buttonLooks = (name: string, colors: typeof success) => {
+			return createLooks(name, btnStyle, {
+				color: colors.fg,
+				backgroundColor: colors.bg,
+				borderColor: colors.border,
 			})
-			.pseudo(':hover', {
-				backgroundColor: '#218838',
-				borderColor: '#1e7e34',
-			})
-			.pseudo(':focus', {
-				boxShadow: '0 0 0 0.2em rgba(40,167,69,.5)',
-			})
+				.pseudo(':active', {
+					backgroundColor: colors.bgActive,
+					borderColor: colors.borderActive,
+				})
+				.pseudo(':hover', {
+					backgroundColor: colors.bgHover,
+					borderColor: colors.borderHover,
+				})
+				.pseudo(':focus', {
+					boxShadow: '0 0 0 0.2em ' + hex2rgba(colors.bg, .5),
+				})
+		}
 
-
-		this.btnDanger = createLooks('btn-danger', btnStyle, roundCornerStyle, {
-			color: '#fff',
-			backgroundColor: dangerColor,
-			borderColor: dangerColor,
-		})
-			.pseudo(':active', {
-				backgroundColor: '#bd2130',
-				borderColor: '#b21f2d',
-			})
-			.pseudo(':hover', {
-				backgroundColor: '#c82333',
-				borderColor: '#bd2130',
-			})
-			.pseudo(':focus', {
-				boxShadow: '0 0 0 0.2em rgba(220,53,69,.5)',
-			})
-
-		this.btnPrimary = createLooks('btn-primary', btnStyle, roundCornerStyle, {
-			color: '#fff',
-			backgroundColor: primaryColor,
-			borderColor: primaryColor,
-		})
-			.pseudo(':active', {
-				backgroundColor: '#0062cc',
-				borderColor: '#005cbf',
-			})
-			.pseudo(':hover', {
-				backgroundColor: '#0069d9',
-				borderColor: '#0062cc',
-			})
-			.pseudo(':focus', {
-				boxShadow: '0 0 0 0.2em rgba(0,123,255,.5)',
-			})
-
-		this.btnSecondary = createLooks('btn-secondary', btnStyle, roundCornerStyle, {
-			color: '#fff',
-			backgroundColor: secondaryColor,
-			borderColor: secondaryColor,
-		})
-			.pseudo(':active', {
-				backgroundColor: '#545b62',
-				borderColor: '#4e555b',
-			})
-			.pseudo(':hover', {
-				backgroundColor: '#5a6268',
-				borderColor: '#545b62',
-			})
-			.pseudo(':focus', {
-				boxShadow: '0 0 0 0.2em rgba(108,117,125,.5)',
-			})
-
-		this.btnLight = createLooks('btn-light', btnStyle, roundCornerStyle, {
-			color: '#212529',
-			backgroundColor: lightColor,
-			borderColor: lightColor,
-		})
-			.pseudo(':active', {
-				backgroundColor: '#dae0e5',
-				borderColor: '#d3d9df',
-			})
-			.pseudo(':hover', {
-				backgroundColor: '#e2e6ea',
-				borderColor: '#dae0e5',
-			})
-			.pseudo(':focus', {
-				boxShadow: '0 0 0 .2rem rgba(248,249,250,.5)',
-			})
-
+		this.btnSuccess = buttonLooks('btn-success', success)
+		this.btnDanger = buttonLooks('btn-danger', danger)
+		this.btnPrimary = buttonLooks('btn-primary', primary)
+		this.btnSecondary = buttonLooks('btn-secondary', secondary)
+		this.btnLight = buttonLooks('btn-light', light)
 
 		this.groupBtnSuccess = copyLooks('group-btn-success', this.btnSuccess)
 		this.groupBtnDanger = copyLooks('group-btn-danger', this.btnDanger)
@@ -408,27 +391,24 @@ export class Looks {
 		})
 	}
 
-	createLooks(className: string, ...styles: (Style | CSS.Properties)[]): Style {
+	create(copy: boolean, className: string, ...styles: (Style | CSS.Properties)[]): Style {
 		className = className + '-' + this.uniqueID + '-' + this.baseClassName
-		return new Style(this.style.sheet as CSSStyleSheet, this.selectorPrefix, className, ...styles)
+		const r = new Style(this.style.sheet as CSSStyleSheet, this.selectorPrefix, className, ...styles)
+		if (copy) {
+			for (const style of styles) {
+				if (!(style instanceof Style)) {
+					continue
+				}
+				for (const tup of style.pseudoStyles) {
+					r.pseudo(tup.name, ...tup.propsList)
+				}
+			}
+		}
+		return r
 	}
 
 	uniqueName(name: string) {
 		return 'timeline-' + name + '-' + this.uniqueID
-	}
-
-	uniqueClass(name: string) {
-		return { 'class': this.uniqueName(name) }
-	}
-
-	addRule(cl: { 'class': string }, style: string) {
-		this.addRulePseudo(cl, '', style)
-	}
-
-	addRulePseudo(cl: { 'class': string }, pseudo: string, style: string) {
-		const selector = '.' + this.baseClassName + '-' + this.uniqueID + ' .' + cl.class + pseudo
-		const rule = selector + ' { ' + style + ' }'
-		this.addRawRule(rule)
 	}
 
 	addRawRule(rule: string) {

@@ -63,3 +63,12 @@ export const middle = (app: types.Looker, ...kids: HTMLElement[]) => {
 		),
 	)
 }
+
+export const retryable = (root: HTMLElement, fn: () => Promise<any>) => {
+	try {
+		fn()
+	} catch (err) {
+		// xxx show error-message on root. save the original children, and restore them on cancel.
+		alert('error: ' + err.message)
+	}
+}

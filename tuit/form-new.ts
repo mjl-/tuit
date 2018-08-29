@@ -25,7 +25,7 @@ export class FormNew<Item> implements types.UI, types.Stater {
 					'New ' + objectName
 				),
 				dom.form(
-					dom.listener('submit', ev => {
+					dom.listen('submit', ev => {
 						ev.preventDefault()
 						// xxx see if we can make this more typesafe
 						const object: any = {}

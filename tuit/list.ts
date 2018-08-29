@@ -73,7 +73,7 @@ export class List<
 		this.search = dom.input(
 			app.looks.searchInput,
 			{ placeholder: 'search...' },
-			dom.listener('keyup', ev => {
+			dom.listen('keyup', ev => {
 				const v = this.searchValue()
 				this.filter()
 				if (v) {
@@ -96,7 +96,7 @@ export class List<
 		this.listBox = app.box(
 			looksListBox,
 			attr.tabindex0,
-			dom.listener('keydown', ev => {
+			dom.listen('keydown', ev => {
 				if (this.rowsFiltered.length === 0) {
 					return
 				}
@@ -149,7 +149,7 @@ export class List<
 					' ',
 					dom.button(
 						app.looks.btnSuccess,
-						dom.listener('click', ev => {
+						dom.listen('click', ev => {
 							this.deselect(false)
 							this.loadNew([])
 							app.saveState()

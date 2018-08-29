@@ -22,7 +22,7 @@ export class Confirm implements types.UI {
 				spinBox,
 				this.button = dom.button(
 					app.looks.btnPrimary,
-					dom.listener('click', ev => fn()),
+					dom.listen('click', ev => fn()),
 					action,
 				),
 			),

@@ -35,6 +35,7 @@ export interface Loader {
 export interface Looker {
 	looks: looks.Looks
 	ensureLooks: (className: string, ...styles: (looks.Style | dom.CSSProperties)[]) => looks.Style
+	copyLooks: (className: string, ...styles: (looks.Style | dom.CSSProperties)[]) => looks.Style
 }
 
 export interface Aborter {

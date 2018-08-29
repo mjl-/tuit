@@ -93,10 +93,16 @@ export const style = (...l: ElemArg[]) => fill(document.createElement('style'), 
 export const textarea = (...l: ElemArg[]) => fill(document.createElement('textarea'), l)
 export const select = (...l: ElemArg[]) => fill(document.createElement('select'), l)
 export const option = (...l: ElemArg[]) => fill(document.createElement('option'), l)
+export const ul = (...l: ElemArg[]) => fill(document.createElement('ul'), l)
+export const ol = (...l: ElemArg[]) => fill(document.createElement('ol'), l)
+export const li = (...l: ElemArg[]) => fill(document.createElement('li'), l)
+export const dl = (...l: ElemArg[]) => fill(document.createElement('dl'), l)
+export const dt = (...l: ElemArg[]) => fill(document.createElement('dt'), l)
+export const dd = (...l: ElemArg[]) => fill(document.createElement('dd'), l)
 
-export function listener(event: 'keyup' | 'keydown', handler: (event: KeyboardEvent) => void): Listener
-export function listener(event: string, handler: (event: Event) => void): Listener
-export function listener(event: string, handler: (event: any) => void): Listener {
+export function listen(event: 'keyup' | 'keydown', handler: (event: KeyboardEvent) => void): Listener
+export function listen(event: string, handler: (event: Event) => void): Listener
+export function listen(event: string, handler: (event: any) => void): Listener {
 	return new Listener(event, handler)
 }
 

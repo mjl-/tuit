@@ -20,14 +20,14 @@ export class TypeaheadOption implements dom.Rooter {
 			looksTypeaheadOption,
 			attr.tabindex0,
 			value,
-			dom.listener('click', ev => typeahead.selected(this)),
-			dom.listener('keydown', ev => {
+			dom.listen('click', ev => typeahead.selected(this)),
+			dom.listen('keydown', ev => {
 				if (ev.key === 'Enter') {
 					ev.preventDefault()
 					typeahead.selected(this)
 				}
 			}),
-			dom.listener('blur', ev => typeahead.checkFocus()),
+			dom.listen('blur', ev => typeahead.checkFocus()),
 		)
 	}
 }
@@ -79,13 +79,13 @@ export class Typeahead implements types.UI {
 		this.input = dom.input(
 			inputLooks,
 			{ value: value },
-			dom.listener('focus', ev => {
+			dom.listen('focus', ev => {
 				this.focused()
 				this.input.className = inputFocusedLooks.className
 				this.filter(true)
 			}),
-			dom.listener('blur', ev => this.checkFocus()),
-			dom.listener('keydown', ev => {
+			dom.listen('blur', ev => this.checkFocus()),
+			dom.listen('keydown', ev => {
 				if (ev.key === 'Enter') {
 					if (this.input.value) {
 						if (this.values.includes(this.input.value)) {
@@ -99,7 +99,7 @@ export class Typeahead implements types.UI {
 					this.input.value = commonPrefix(this.input.value, this.optionsFiltered.map(o => o.value))
 				}
 			}),
-			dom.listener('keyup', ev => {
+			dom.listen('keyup', ev => {
 				this.filter(true)
 			}),
 		)
