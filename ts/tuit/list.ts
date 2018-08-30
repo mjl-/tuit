@@ -186,7 +186,7 @@ export class List<
 		let w = state.shift()
 		if (w === 'New') {
 			return this.loadNew(state)
-		} else if (typeof w === 'string' && w.startsWith('=')) {
+		} else if (typeof w === 'string' && w.startsWith('-')) {
 			w = w.substring(1)
 			const row = this.rowsFiltered.find(row => row.key === w)
 			if (row) {
@@ -201,7 +201,7 @@ export class List<
 		if (this.newUI) {
 			return ['New', ...this.newUI.currentState()]
 		} else if (this.selected && this.viewUI) {
-			return ['=' + this.selected.key, ...this.viewUI.currentState()]
+			return ['-' + this.selected.key, ...this.viewUI.currentState()]
 		} else {
 			return []
 		}
