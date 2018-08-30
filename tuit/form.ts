@@ -1,6 +1,8 @@
 import * as dom from '../dom'
 import * as types from './types'
 
+// todo: fix this, som of it is untested, eg multiselect, radio
+
 export type FieldKind = 'line' | 'email' | 'number' | 'multiline' | 'checkbox' | 'select' | 'multiselect' | 'radio' | 'date'
 export interface Field {
 	label: string

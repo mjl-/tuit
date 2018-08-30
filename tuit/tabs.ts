@@ -1,6 +1,6 @@
 import * as dom from '../dom'
 import * as types from './types'
-import * as attr from './attr'
+import * as fns from './fns'
 import * as load from './load'
 
 const tabsBoxStyle: dom.CSSProperties = {
@@ -16,7 +16,7 @@ export class Tabs implements types.UI, types.Stater {
 	buttons: HTMLButtonElement[]
 	loaded: boolean[]
 
-	constructor(private app: dom.Rooter & types.Saver & types.Loader & types.Looker & types.Boxer & types.StateSaver, public tabs: { label: string, name: string, ui: types.UI & types.Focuser & types.Stater }[]) {
+	constructor(private app: dom.Rooter & types.Saver & types.Loader & types.Looker & types.StateSaver, public tabs: { label: string, name: string, ui: types.UI & types.Stater }[]) {
 		const looksTabsBox = app.ensureLooks('tabs-box', tabsBoxStyle)
 
 		this.activeIndex = -1
@@ -25,12 +25,13 @@ export class Tabs implements types.UI, types.Stater {
 				app.looks.groupBtnLight,
 				dom.listen('click', ev => this.select(index)),
 				tabs[index].label,
-				attr.tabindex0,
+				{ tabindex: '0' },
 			)
 		)
 		this.loaded = this.buttons.map(() => false)
-		this.selectedBox = app.box()
-		this.root = app.box(
+		this.selectedBox = fns.box(app)
+		this.root = fns.box(
+			app,
 			dom.div(
 				looksTabsBox,
 				dom.div(
@@ -42,7 +43,7 @@ export class Tabs implements types.UI, types.Stater {
 		)
 	}
 
-	async openTab(name: string): Promise<types.UI & types.Focuser & types.Stater> {
+	async openTab(name: string): Promise<types.UI & types.Stater> {
 		const index = this.tabs.findIndex(tab => tab.name === name)
 		if (index < 0) {
 			return Promise.reject({ message: 'cannot find tab' })

@@ -5,8 +5,6 @@ export const delay = async (ms: number): Promise<void> => {
 	await new Promise(resolve => setTimeout(resolve, ms))
 }
 
-export const titleize = (s: string) => s.substring(0, 1).toUpperCase() + s.substring(1)
-
 export const parseState = (): types.State => {
 	const words = location.hash ? decodeURI(location.hash || '#').substring(1).split(' ') : []
 
@@ -68,13 +66,4 @@ export const middle = (app: types.Looker, ...kids: HTMLElement[]) => {
 			...kids,
 		),
 	)
-}
-
-export const retryable = (root: HTMLElement, fn: () => Promise<any>) => {
-	try {
-		fn()
-	} catch (err) {
-		// xxx show error-message on root. save the original children, and restore them on cancel.
-		alert('error: ' + err.message)
-	}
 }

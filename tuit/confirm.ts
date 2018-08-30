@@ -9,7 +9,6 @@ export class Confirm implements types.UI {
 	private button: HTMLElement
 
 	constructor(app: types.Looker, title: string, message: string, action: string, fn: () => void) {
-		const spinBox = dom.span()
 		this.root = dom.div(
 			dom.h1(app.looks.title, title),
 			dom.p(
@@ -19,7 +18,6 @@ export class Confirm implements types.UI {
 			dom.br(),
 			dom.div(
 				styles.textAlign.right,
-				spinBox,
 				this.button = dom.button(
 					app.looks.btnPrimary,
 					dom.listen('click', ev => fn()),

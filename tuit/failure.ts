@@ -1,6 +1,5 @@
 import * as dom from '../dom'
 import * as types from './types'
-import * as fns from './fns'
 
 export class Failure implements types.UI {
 	root: HTMLElement
@@ -12,7 +11,7 @@ export class Failure implements types.UI {
 				app.looks.alertDanger,
 				dom.div(
 					app.looks.textWrap,
-					fns.titleize(message),
+					message,
 				)
 			),
 		)
@@ -21,4 +20,3 @@ export class Failure implements types.UI {
 	focus() {
 	}
 }
-

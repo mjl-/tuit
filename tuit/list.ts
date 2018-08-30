@@ -1,7 +1,6 @@
 import * as dom from '../dom'
 import * as types from './types'
 import * as looks from './looks'
-import * as attr from './attr'
 import * as split from './split'
 import * as fns from './fns'
 import * as load from './load'
@@ -47,7 +46,7 @@ export class List<
 	ItemRow extends dom.Rooter & ItemRower<Item>,
 	ItemNew extends types.UI & types.Stater,
 	ItemView extends types.UI & types.Stater,
-	> implements types.UI, types.Focuser, types.Stater {
+	> implements types.UI, types.Stater {
 	root: HTMLElement
 	selected?: ItemRow
 	rowsAll: ItemRow[]
@@ -61,7 +60,7 @@ export class List<
 	newUI?: ItemNew
 
 	constructor(
-		private app: dom.Rooter & types.Saver & types.Loader & types.Looker & types.Boxer & types.StateSaver,
+		private app: dom.Rooter & types.Saver & types.Loader & types.Looker & types.StateSaver,
 		private title: string,
 		items: Item[],
 		private rowClass: { new(app: types.Looker, item: Item, listUI: Selecter<Item, ItemRow>): ItemRow },
@@ -93,10 +92,11 @@ export class List<
 		})
 		this.rowsFiltered = this.rowsAll.map(e => e)
 		this.rowsFiltered.sort((a: ItemRow, b: ItemRow) => a.compare(b))
-		this.listBox = app.box(
+		this.listBox = fns.box(
+			app,
 			dom.div(
 				looksListBox,
-				attr.tabindex0,
+				{ tabindex: '0' },
 				dom.listen('keydown', ev => {
 					if (this.rowsFiltered.length === 0) {
 						return
@@ -139,7 +139,8 @@ export class List<
 				...this.rowsFiltered,
 			)
 		)
-		this.list = app.box(
+		this.list = fns.box(
+			app,
 			dom._style(styles.list),
 			dom.div(
 				app.looks.boxPadding,
@@ -164,9 +165,10 @@ export class List<
 			this.listBox,
 		)
 		this.noSelection = fns.middle(app, dom.div('Choose from the list'))
-		this.detailBox = app.box()
+		this.detailBox = fns.box(app)
 		const splitUI = new split.Split(app, this.list, this.detailBox)
-		this.root = app.box(
+		this.root = fns.box(
+			app,
 			{ ui: 'ItemList' },
 			splitUI,
 		)

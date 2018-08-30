@@ -5,17 +5,14 @@ interface StringDict {
 	[propName: string]: string
 }
 
-export interface StringKeyDict {
-	[propName: string]: any
-}
-
 class Listener {
 	constructor(public event: string, public handler: (event: Event) => void) {
 	}
 }
 
 export class Style {
-	constructor(public props: CSS.Properties) { }
+	constructor(public props: CSS.Properties) {
+	}
 }
 
 export interface Rooter {

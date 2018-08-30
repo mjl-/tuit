@@ -1,24 +1,25 @@
 import * as dom from '../dom'
-import * as attr from './attr'
 import * as looks from './looks'
 import * as types from './types'
 import * as popover from './popover'
+
+const typeaheadOptionStyle: dom.CSSProperties = {
+	padding: '.25em',
+	borderRadius: '.25em',
+	cursor: 'pointer',
+}
 
 export class TypeaheadOption implements dom.Rooter {
 	root: HTMLElement
 
 	constructor(app: types.Looker, public value: string, typeahead: Typeahead) {
-		const looksTypeaheadOption = app.ensureLooks('typeahead-option', {
-			padding: '.25em',
-			borderRadius: '.25em',
-			cursor: 'pointer',
-		})
+		const looksTypeaheadOption = app.ensureLooks('typeahead-option', typeaheadOptionStyle)
 			.pseudo(':hover', { backgroundColor: '#eee' })
 			.pseudo(':focus', { backgroundColor: '#ddd' })
 
 		this.root = dom.div(
 			looksTypeaheadOption,
-			attr.tabindex0,
+			{ tabindex: '0' },
 			value,
 			dom.listen('click', ev => typeahead.selected(this)),
 			dom.listen('keydown', ev => {

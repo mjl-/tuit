@@ -1,8 +1,8 @@
 import * as dom from '../dom'
 import * as types from './types'
-import * as fns from './fns'
 import * as confirm from './confirm'
 import * as form from './form'
+import * as fns from './fns'
 
 export class FormEdit<Item> implements types.UI, types.Stater {
 	root: HTMLElement
@@ -10,7 +10,7 @@ export class FormEdit<Item> implements types.UI, types.Stater {
 	fieldValues: form.FieldValue[]
 
 	constructor(
-		app: dom.Rooter & types.Saver & types.Loader & types.Looker & types.Boxer & types.StateSaver,
+		app: dom.Rooter & types.Saver & types.Loader & types.Looker & types.StateSaver,
 		objectName: string,
 		fields: form.Field[],
 		item: Item,
@@ -22,14 +22,15 @@ export class FormEdit<Item> implements types.UI, types.Stater {
 		const removeSpinBox = dom.span()
 		let removeButton: HTMLButtonElement
 		this.fieldValues = []
-		this.root = app.box(
+		this.root = fns.box(
+			app,
 			{ ui: 'FormEdit' },
 			dom.div(
 				app.looks.boxPaddingLast,
 				dom.div(
 					dom.h1(
 						app.looks.inlineTitle,
-						fns.titleize(objectName),
+						objectName.substring(0, 1).toUpperCase() + objectName.substring(1),
 					),
 					' ',
 					removeButton = dom.button(

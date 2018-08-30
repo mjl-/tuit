@@ -1,6 +1,5 @@
 import * as dom from '../dom'
 import * as types from './types'
-import * as attr from './attr'
 import * as fns from './fns'
 
 export enum PopupSize {
@@ -51,7 +50,7 @@ const popupLargeStyle: dom.CSSProperties = {
 }
 
 
-export const popup = (app: types.Looker & dom.Rooter, size: PopupSize, view: types.UI & types.Focuser, canceled: () => void) => {
+export const popup = (app: types.Looker & dom.Rooter, size: PopupSize, view: types.UI, canceled: () => void) => {
 	const looksPopupCloseBtn = app.ensureLooks('popup-close-btn', popupCloseBtnStyle)
 	const looksPopupBg = app.ensureLooks('popup-bg', popupBgStyle)
 	const looksPopup =
@@ -65,7 +64,7 @@ export const popup = (app: types.Looker & dom.Rooter, size: PopupSize, view: typ
 	}
 	const closeButton = dom.div(
 		looksPopupCloseBtn,
-		attr.tabindex0,
+		{ tabindex: '0' },
 		dom.listen('keydown', ev => {
 			if (ev.key === 'Enter') {
 				close()

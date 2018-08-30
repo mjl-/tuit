@@ -41,7 +41,3 @@ export interface Looker {
 export interface Aborter {
 	abort?: () => void
 }
-
-export interface Boxer {
-	box: (...l: dom.ElemArg0[]) => HTMLElement
-}

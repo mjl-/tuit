@@ -1,6 +1,7 @@
 import * as dom from '../dom'
 import * as types from './types'
 import * as form from './form'
+import * as fns from './fns'
 
 export class FormNew<Item> implements types.UI, types.Stater {
 	root: HTMLElement
@@ -8,7 +9,7 @@ export class FormNew<Item> implements types.UI, types.Stater {
 	fieldValues: form.FieldValue[]
 
 	constructor(
-		app: dom.Rooter & types.Saver & types.Loader & types.Looker & types.Boxer & types.StateSaver,
+		app: dom.Rooter & types.Saver & types.Loader & types.Looker & types.StateSaver,
 		objectName: string,
 		fields: form.Field[],
 		create: (object: Item) => Promise<void>,
@@ -16,7 +17,8 @@ export class FormNew<Item> implements types.UI, types.Stater {
 		const spinBox = dom.span()
 		let fieldset: HTMLFieldSetElement
 		this.fieldValues = []
-		this.root = app.box(
+		this.root = fns.box(
+			app,
 			{ ui: 'FormNew' },
 			dom.div(
 				app.looks.boxPaddingLast,

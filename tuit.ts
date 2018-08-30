@@ -1,4 +1,3 @@
-export * from './tuit/attr'
 export * from './tuit/confirm'
 export * from './tuit/failure'
 export * from './tuit/fns'
