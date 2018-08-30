@@ -14,7 +14,6 @@ export class Tabs implements types.UI, types.Stater {
 	selectedBox: HTMLElement
 	activeIndex: number
 	buttons: HTMLButtonElement[]
-	loaded: boolean[]
 
 	constructor(private app: dom.Rooter & types.Saver & types.Loader & types.Looker & types.StateSaver, public tabs: { label: string, name: string, ui: types.UI & types.Stater }[]) {
 		const looksTabsBox = app.ensureLooks('tabs-box', tabsBoxStyle)
@@ -28,7 +27,6 @@ export class Tabs implements types.UI, types.Stater {
 				{ tabindex: '0' },
 			)
 		)
-		this.loaded = this.buttons.map(() => false)
 		this.selectedBox = fns.box(app)
 		this.root = fns.box(
 			app,
@@ -58,18 +56,16 @@ export class Tabs implements types.UI, types.Stater {
 	}
 
 	async loadTab(state: types.State, index: number): Promise<void> {
-		if (this.activeIndex >= 0) {
-			this.buttons[this.activeIndex].className = this.app.looks.groupBtnLight.className
+		if (this.activeIndex !== index) {
+			if (this.activeIndex >= 0) {
+				this.buttons[this.activeIndex].className = this.app.looks.groupBtnLight.className
+			}
+			this.activeIndex = index
+			this.buttons[this.activeIndex].className = this.app.looks.groupBtnPrimary.className
+			const activeTab = this.tabs[this.activeIndex]
+			await load.reveal(this.selectedBox, activeTab.ui.root)
 		}
-		this.activeIndex = index
-		this.buttons[this.activeIndex].className = this.app.looks.groupBtnPrimary.className
-		const activeTab = this.tabs[this.activeIndex]
-		await load.reveal(this.selectedBox, activeTab.ui.root)
-		if (this.loaded[index]) {
-			return
-		}
-		this.loaded[index] = true
-		return activeTab.ui.loadState(state)
+		return this.tabs[this.activeIndex].ui.loadState(state)
 	}
 
 	focus() {

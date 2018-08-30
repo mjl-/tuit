@@ -7,7 +7,7 @@ clean:
 	-rm *.js *.d.ts tuit/*.js tuit/*.d.ts
 
 fmt:
-	node_modules/.bin/tsfmt -r dom.ts tuit.ts `find tuit -name '*.ts' ! -name '*.d.ts'`
+	node_modules/.bin/tsfmt -r
 
 docs:
 	# needs npm install typedoc

@@ -182,7 +182,7 @@ export class List<
 		newUI.focus()
 	}
 
-	loadState(state: types.State): Promise<void> {
+	async loadState(state: types.State): Promise<void> {
 		let w = state.shift()
 		if (w === 'New') {
 			return this.loadNew(state)
@@ -246,15 +246,17 @@ export class List<
 	}
 
 	async loadItem(state: types.State, ir: ItemRow): Promise<void> {
-		this.newUI = undefined
-		if (this.selected) {
-			this.selected.markUnselected()
+		if (ir !== this.selected) {
+			this.newUI = undefined
+			if (this.selected) {
+				this.selected.markUnselected()
+			}
+			this.selected = ir
+			this.selected.markSelected()
+			this.viewUI = this.viewClass(ir)
+			load.reveal(this.detailBox, this.viewUI!.root)
 		}
-		this.selected = ir
-		this.selected.markSelected()
-		this.viewUI = this.viewClass(ir)
-		await this.viewUI.loadState(state)
-		load.reveal(this.detailBox, this.viewUI.root)
+		await this.viewUI!.loadState(state)
 	}
 
 	select(ir: ItemRow) {
