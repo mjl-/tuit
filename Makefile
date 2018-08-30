@@ -1,13 +1,17 @@
 SHELL=/bin/bash -o pipefail
 
 default:
-	node_modules/.bin/tsc --declaration --noFallthroughCasesInSwitch --noUnusedLocals --noImplicitReturns --forceConsistentCasingInFileNames --strict --target ES6 --module ES6 --moduleResolution Classic --lib DOM,ES6,DOM.Iterable,ES2016 --outDir . dom.ts tuit.ts | ansifilter | sed -E 's/^([^\(]+)\(([0-9]+),([0-9]+)\):/\1:\2:\3: /'
+	node_modules/.bin/tsc | ansifilter | sed -E 's/^([^\(]+)\(([0-9]+),([0-9]+)\):/\1:\2:\3: /'
 
 clean:
 	-rm *.js *.d.ts tuit/*.js tuit/*.d.ts
 
 fmt:
 	node_modules/.bin/tsfmt -r dom.ts tuit.ts `find tuit -name '*.ts' ! -name '*.d.ts'`
+
+docs:
+	# needs npm install typedoc
+	./node_modules/.bin/typedoc --out docs --mode file --excludePrivate --excludeProtected --target ES6
 
 setup:
 	-mkdir -p node_modules/.bin

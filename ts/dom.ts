@@ -1,5 +1,5 @@
-import * as CSS from './node_modules/csstype/index'
-export { Properties as CSSProperties } from './node_modules/csstype/index'
+import * as CSS from 'csstype'
+export { Properties as CSSProperties } from 'csstype'
 
 interface StringDict {
 	[propName: string]: string

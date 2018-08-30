@@ -1,4 +1,3 @@
-import * as CSS from '../node_modules/csstype/index'
 import * as dom from '../dom'
 
 export const success = {
@@ -49,10 +48,10 @@ export const light = {
 
 
 export class Style {
-	readonly propsList: CSS.Properties[]
-	pseudoStyles: { name: string, propsList: CSS.Properties[] }[]
+	readonly propsList: dom.CSSProperties[]
+	pseudoStyles: { name: string, propsList: dom.CSSProperties[] }[]
 
-	constructor(readonly sheet: CSSStyleSheet, private readonly selectorPrefix: string, readonly className: string, ...styles: (Style | CSS.Properties)[]) {
+	constructor(readonly sheet: CSSStyleSheet, private readonly selectorPrefix: string, readonly className: string, ...styles: (Style | dom.CSSProperties)[]) {
 		this.propsList = []
 		this.pseudoStyles = []
 		for (const style of styles) {
@@ -68,13 +67,13 @@ export class Style {
 		this.add('.' + className, this.propsList)
 	}
 
-	pseudo(pseudo: string, ...propsList: CSS.Properties[]): this {
+	pseudo(pseudo: string, ...propsList: dom.CSSProperties[]): this {
 		this.add('.' + this.className + pseudo, propsList)
 		this.pseudoStyles.push({ name: pseudo, propsList: propsList })
 		return this
 	}
 
-	private add(selector: string, propsList: CSS.Properties[]) {
+	private add(selector: string, propsList: dom.CSSProperties[]) {
 		const selectorText = this.selectorPrefix + selector
 		const index = this.sheet.cssRules.length
 		this.sheet.insertRule(selectorText + ' {}', index)
@@ -138,7 +137,7 @@ export class Looks {
 		this.selectorPrefix = '.' + this.baseClassName + '-' + this.uniqueID + ' '
 
 
-		const addResetRule = (selector: string, props: CSS.Properties) => {
+		const addResetRule = (selector: string, props: dom.CSSProperties) => {
 			const sheet = this.style.sheet as CSSStyleSheet
 			const selectorText = this.selectorPrefix + selector
 			const index = sheet.cssRules.length
@@ -171,10 +170,10 @@ export class Looks {
 		})
 
 
-		const createLooks = (className: string, ...styles: (Style | CSS.Properties)[]): Style => {
+		const createLooks = (className: string, ...styles: (Style | dom.CSSProperties)[]): Style => {
 			return this.create(false, className, ...styles)
 		}
-		const copyLooks = (className: string, ...styles: (Style | CSS.Properties)[]): Style => {
+		const copyLooks = (className: string, ...styles: (Style | dom.CSSProperties)[]): Style => {
 			return this.create(true, className, ...styles)
 		}
 
@@ -391,7 +390,7 @@ export class Looks {
 		})
 	}
 
-	create(copy: boolean, className: string, ...styles: (Style | CSS.Properties)[]): Style {
+	create(copy: boolean, className: string, ...styles: (Style | dom.CSSProperties)[]): Style {
 		className = className + '-' + this.uniqueID + '-' + this.baseClassName
 		const r = new Style(this.style.sheet as CSSStyleSheet, this.selectorPrefix, className, ...styles)
 		if (copy) {
