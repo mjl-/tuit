@@ -49,58 +49,70 @@ const popupLargeStyle: dom.CSSProperties = {
 	right: 'calc(50% - 450px)',
 }
 
+export class Popup {
+	closed: Promise<boolean>	// true means popup closed by call to close(), false means popup was canceled
+	closedResolve: (v: boolean) => void
 
-export const popup = (app: types.Looker & dom.Rooter, size: PopupSize, view: types.UI, canceled: () => void) => {
-	const looksPopupCloseBtn = app.ensureLooks('popup-close-btn', popupCloseBtnStyle)
-	const looksPopupBg = app.ensureLooks('popup-bg', popupBgStyle)
-	const looksPopup =
-		size === PopupSize.Small ? app.ensureLooks('popup-small', popupStyle, popupSmallStyle) :
-			size === PopupSize.Medium ? app.ensureLooks('popup-medium', popupStyle, popupMediumStyle) :
-				app.ensureLooks('popup-large', popupStyle, popupLargeStyle)
+	private background: HTMLElement
+	private popup: HTMLElement
 
-	const close = () => {
-		bg.remove()
-		popup.remove()
-	}
-	const closeButton = dom.div(
-		looksPopupCloseBtn,
-		{ tabindex: '0' },
-		dom.listen('keydown', ev => {
-			if (ev.key === 'Enter') {
-				close()
-				canceled()
-			}
-		}),
-		dom.listen('click', ev => {
-			close()
-			canceled()
-		}),
-		'x',
-	)
-	const bg = dom.div(
-		looksPopupBg,
-		dom.listen('click', ev => {
-			close()
-			canceled()
-		}),
-	)
-	const popup = dom.div(
-		looksPopup,
-		closeButton,
-		view,
-		dom.listen('keyup', ev => {
-			if (ev.key === 'Escape') {
-				ev.stopPropagation()
-				close()
-				canceled()
-			}
+	constructor(app: types.Looker & dom.Rooter, view: types.UI, size: PopupSize = PopupSize.Medium) {
+		const looksPopupCloseBtn = app.ensureLooks('popup-close-btn', popupCloseBtnStyle)
+		const looksPopupBg = app.ensureLooks('popup-bg', popupBgStyle)
+		const looksPopup =
+			size === PopupSize.Small ? app.ensureLooks('popup-small', popupStyle, popupSmallStyle) :
+				size === PopupSize.Medium ? app.ensureLooks('popup-medium', popupStyle, popupMediumStyle) :
+					app.ensureLooks('popup-large', popupStyle, popupLargeStyle)
+
+		// tsc doesn't know new Promise() calls its handler immediately and initializes these values.
+		this.closedResolve = (v: boolean) => {}
+		this.closed = new Promise(resolve => {
+			this.closedResolve = resolve
 		})
-	)
-	app.root.appendChild(bg)
-	app.root.appendChild(popup)
-	fns.fade(bg, .25)
-	fns.fade(popup, .25)
-	closeButton.focus() // in case view.focus() doesn't set a focus
-	view.focus()
-	return close
+
+		const closeButton = dom.div(
+			looksPopupCloseBtn,
+			{ tabindex: '0' },
+			dom.listen('keydown', e => {
+				if (e.key === 'Enter') {
+					this.cancel()
+				}
+			}),
+			dom.listen('click', () => this.cancel()),
+			'x',
+		)
+		this.background = dom.div(
+			looksPopupBg,
+			dom.listen('click', () => this.cancel())
+		)
+		this.popup = dom.div(
+			looksPopup,
+			closeButton,
+			view,
+			dom.listen('keyup', ev => {
+				if (ev.key === 'Escape') {
+					ev.stopPropagation()
+					this.cancel()
+				}
+			})
+		)
+		app.root.appendChild(this.background)
+		app.root.appendChild(this.popup)
+		fns.fade(this.background, .25)
+		fns.fade(this.popup, .25)
+		closeButton.focus() // in case view.focus() doesn't set a focus
+		view.focus()
+	}
+
+	close() {
+		this.background.remove()
+		this.popup.remove()
+		this.closedResolve(true)
+	}
+
+	cancel() {
+		this.background.remove()
+		this.popup.remove()
+		this.closedResolve(false)
+	}
 }
