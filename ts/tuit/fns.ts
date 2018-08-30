@@ -5,15 +5,31 @@ export const delay = async (ms: number): Promise<void> => {
 	await new Promise(resolve => setTimeout(resolve, ms))
 }
 
-export const parseState = (): types.State => {
-	const words = location.hash ? decodeURI(location.hash || '#').substring(1).split(' ') : []
+// packState returns the state in a form that can be assigned to location.hash directly.
+export const packState = (state: types.State): string => {
+	if (state.length === 0) {
+		return ''
+	}
+
+	const pack = (st: types.StateWord): string => {
+		if (typeof st === 'string') {
+			return encodeURIComponent(st)
+		}
+		return ['[', ...st.map(w => pack(w)), ']'].join(' ')
+	}
+	return '#' + state.map(w => pack(w)).join(' ')
+}
+
+
+export const parseState = (locationHash: string): types.State => {
+	const words = locationHash ? decodeURI(locationHash).substring(1).split(' ') : []
 
 	const takeArray = (): types.State => {
 		const r: types.State = []
-		while (words.length > 0 && words[0] !== '.') {
+		while (words.length > 0 && words[0] !== ']') {
 			const w = words[0]
 			words.shift()
-			if (w === '/') {
+			if (w === '[') {
 				r.push(takeArray())
 				words.shift()
 			} else {
