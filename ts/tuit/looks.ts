@@ -96,7 +96,6 @@ export class Looks {
 	inlineTitle: Style
 	formInput: Style
 	textarea: Style
-	tableInput: Style
 	tableInputSmall: Style
 	searchInput: Style
 	searchInputFiltered: Style
@@ -196,13 +195,11 @@ export class Looks {
 			borderRadius: '.25em',
 			border: '1px solid #ccc',
 			lineHeight: '1',
+			width: '100%',
 		}
 		this.formInput = createLooks('form-input', inputStyle, {
 			marginBottom: '1em',
 			marginTop: '0.5em',
-		})
-		this.tableInput = createLooks('table-input', inputStyle, {
-			width: '100%'
 		})
 		this.tableInputSmall = createLooks('table-input-small', inputStyle, {
 			display: 'inline',
@@ -217,6 +214,7 @@ export class Looks {
 			border: '1px solid #ccc',
 			marginTop: '0.5em',
 			lineHeight: '1',
+			width: '100%',
 		})
 
 		this.searchInput = createLooks('search-input', {
@@ -225,6 +223,7 @@ export class Looks {
 			borderRadius: '.25em',
 			border: '1px solid #ccc',
 			lineHeight: '1',
+			width: '100%',
 		})
 		this.searchInputFiltered = createLooks('search-input-filtered', this.searchInput, { backgroundColor: '#28a74540' })
 		this.searchInputNoresults = createLooks('search-input-noresults', this.searchInput, { backgroundColor: '#dc354540' })

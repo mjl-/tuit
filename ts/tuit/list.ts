@@ -38,7 +38,10 @@ export interface Selecter<Item, ItemRow extends ItemRower<Item>> {
 
 const styles = {
 	listBox: { borderTop: '.25em solid #fff' },
-	list: { borderBottom: '.25em solid #ddd' },
+	list: {
+		borderBottom: '.25em solid #ddd',
+		maxWidth: '13em',
+	},
 }
 
 export class List<
