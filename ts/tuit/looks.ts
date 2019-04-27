@@ -128,6 +128,7 @@ export class Looks {
 	checkmarkSuccess: Style
 	textWrap: Style
 	alertDanger: Style
+	link: Style
 
 	constructor(app: dom.Rooter, private baseClassName: string) {
 		this.style = dom.style({ type: 'text/css' })
@@ -148,8 +149,9 @@ export class Looks {
 		}
 
 		addResetRule('', {
+			color: '#333',
 			lineHeight: '1.5',
-			fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe types.UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe types.UI Emoji","Segoe types.UI Symbol"',
+			fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe types.UI",Roboto,"Helvetica Neue",Arial,sans-serif',
 			fontSize: '15px',
 		})
 		addResetRule('*', {
@@ -178,12 +180,13 @@ export class Looks {
 
 		this.header = createLooks('header', {
 			fontWeight: 'normal',
-			padding: '0.25em 0',
+			padding: '.25em 0',
 			fontSize: '1.5em',
+			fontFamily: 'Palatino, Palatino Linotype, Palatino LT STD, Book Antiqua, Georgia, serif',
 		})
 		this.title = createLooks('title', {
 			fontWeight: 'bold',
-			padding: '0.25em 0',
+			padding: '.25em 0',
 			marginBottom: '1.5ex',
 		})
 		this.inlineTitle = createLooks('inline-title', this.title, { display: 'inline-block' })
@@ -191,15 +194,14 @@ export class Looks {
 		const inputStyle = {
 			display: 'block',
 			fontSize: '1em',
-			padding: '0.4em',
+			padding: '.2em .4em',
 			borderRadius: '.25em',
 			border: '1px solid #ccc',
-			lineHeight: '1',
 			width: '100%',
 		}
 		this.formInput = createLooks('form-input', inputStyle, {
-			marginBottom: '1em',
-			marginTop: '0.5em',
+			marginBottom: '.5em',
+			marginTop: '.5em',
 		})
 		this.tableInputSmall = createLooks('table-input-small', inputStyle, {
 			display: 'inline',
@@ -207,22 +209,20 @@ export class Looks {
 		})
 		this.textarea = createLooks('textarea', {
 			display: 'block',
-			marginBottom: '1em',
+			marginBottom: '.5em',
 			fontSize: '1em',
-			padding: '0.4em',
+			padding: '.2em .4em',
 			borderRadius: '.25em',
 			border: '1px solid #ccc',
-			marginTop: '0.5em',
-			lineHeight: '1',
+			marginTop: '.5em',
 			width: '100%',
 		})
 
 		this.searchInput = createLooks('search-input', {
 			display: 'block',
-			padding: '0.4em',
+			padding: '.2em .4em',
 			borderRadius: '.25em',
 			border: '1px solid #ccc',
-			lineHeight: '1',
 			width: '100%',
 		})
 		this.searchInputFiltered = createLooks('search-input-filtered', this.searchInput, { backgroundColor: '#28a74540' })
@@ -235,7 +235,7 @@ export class Looks {
 		const btnStyle = {
 			fontSize: '1em',
 			border: 'none',
-			padding: '0em 0.6em 0.15em',
+			padding: '0em .6em .15em',
 			cursor: 'pointer',
 			borderRadius: '.25em',
 		}
@@ -261,7 +261,7 @@ export class Looks {
 					borderColor: colors.borderHover,
 				})
 				.pseudo(':focus', {
-					boxShadow: '0 0 0 0.2em ' + hex2rgba(colors.bg, .5),
+					boxShadow: '0 0 0 .2em ' + hex2rgba(colors.bg, .5),
 				})
 		}
 
@@ -277,6 +277,7 @@ export class Looks {
 		this.groupBtnSecondary = copyLooks('group-btn-secondary', this.btnSecondary)
 		this.groupBtnLight = copyLooks('group-btn-light', this.btnLight)
 		for (const v of [this.groupBtnSuccess, this.groupBtnDanger, this.groupBtnPrimary, this.groupBtnSecondary, this.groupBtnLight]) {
+			v.pseudo('', { borderRadius: '0' })
 			v.pseudo(':first-child', { borderRadius: '.25em 0 0 .25em' })
 			v.pseudo(':last-child', { borderRadius: '0 .25em .25em 0' })
 		}
@@ -309,7 +310,7 @@ export class Looks {
 		const spinRotation = this.uniqueName('rotate')
 		this.spin = createLooks('spin', {
 			display: 'inline-block',
-			animation: spinRotation + ' 0.55s infinite linear',
+			animation: spinRotation + ' .55s infinite linear',
 			textAlign: 'center',
 			height: '.7em',
 			width: '.7em',
@@ -349,7 +350,7 @@ export class Looks {
 			.pseudo(':focus', { backgroundColor: '#eee' })
 		this.listItemSelected = createLooks('listen-item-selected', {
 			cursor: 'pointer',
-			padding: '.2em 0.5em .2em .25em',
+			padding: '.2em .5em .2em .25em',
 			margin: '.2em 0 .2em .5em',
 			borderRadius: '.25em 0 0 .25em',
 			backgroundColor: '#007bff',
@@ -360,10 +361,10 @@ export class Looks {
 		this.listItemSelectedPrimary = createLooks('list-item-selected-primary', { color: 'white' })
 		this.listItemSelectedSecondary = createLooks('list-item-selected-primary', { color: '#ddd' })
 
-		this.boxPadding = createLooks('box-padding', { padding: '0.25em 0.5em' })
-		this.boxMargin = createLooks('box-margin', { margin: '0.25em 0.5em' })
-		this.boxPaddingLast = createLooks('box-padding', { padding: '0.25em 0.5em 1em 0.5em' })
-		this.boxMarginLast = createLooks('box-margin', { margin: '0.25em 0.5em 1em 0.5em' })
+		this.boxPadding = createLooks('box-padding', { padding: '.25em .5em' })
+		this.boxMargin = createLooks('box-margin', { margin: '.25em .5em' })
+		this.boxPaddingLast = createLooks('box-padding', { padding: '.25em .5em 1em .5em' })
+		this.boxMarginLast = createLooks('box-margin', { margin: '.25em .5em 1em .5em' })
 
 		this.checkmarkSuccess = createLooks('checkmark-success', {
 			backgroundColor: '#28a745',
@@ -387,6 +388,11 @@ export class Looks {
 			marginBottom: '1em',
 			border: '1px solid transparent',
 		})
+		this.link = createLooks('link', {
+			color: primary.bg,
+		}).pseudo(':hover', {
+			color: primary.bgHover,
+		})
 	}
 
 	create(copy: boolean, className: string, ...styles: (Style | dom.CSSProperties)[]): Style {
@@ -406,7 +412,7 @@ export class Looks {
 	}
 
 	uniqueName(name: string) {
-		return 'timeline-' + name + '-' + this.uniqueID
+		return this.baseClassName + '-' + name + '-' + this.uniqueID
 	}
 
 	addRawRule(rule: string) {

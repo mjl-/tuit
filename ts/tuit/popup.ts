@@ -14,7 +14,7 @@ const popupCloseBtnStyle: dom.CSSProperties = {
 	right: '0',
 	top: '0',
 	color: '#888',
-	padding: '0.25em 0.5em 0.5em',
+	padding: '.25em .5em .5em',
 }
 
 const popupBgStyle: dom.CSSProperties = {
@@ -23,7 +23,7 @@ const popupBgStyle: dom.CSSProperties = {
 	left: '0',
 	right: '0',
 	bottom: '0',
-	backgroundColor: 'rgba(0, 0, 0, 0.5)',
+	backgroundColor: 'rgba(0, 0, 0, .5)',
 	opacity: 0,
 }
 

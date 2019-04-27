@@ -1,7 +1,7 @@
 SHELL=/bin/bash -o pipefail
 
 default:
-	node_modules/.bin/tsc | ansifilter | sed -E 's/^([^\(]+)\(([0-9]+),([0-9]+)\):/\1:\2:\3: /'
+	node_modules/.bin/tsc | sed -E 's/^([^\(]+)\(([0-9]+),([0-9]+)\):/\1:\2:\3: /'
 
 clean:
 	-rm *.js *.d.ts tuit/*.js tuit/*.d.ts
@@ -15,4 +15,4 @@ docs:
 
 setup:
 	-mkdir -p node_modules/.bin
-	npm install typescript@3.0.1 typescript-formatter@7.2.2 csstype@2.5.6
+	npm install typescript@3.4.5 typescript-formatter@7.2.2 csstype@2.6.4

@@ -22,7 +22,7 @@ export const packState = (state: types.State): string => {
 
 
 export const parseState = (locationHash: string): types.State => {
-	const words = locationHash ? decodeURI(locationHash).substring(1).split(' ') : []
+	const words = locationHash ? decodeURIComponent(locationHash).substring(1).split(' ') : []
 
 	const takeArray = (): types.State => {
 		const r: types.State = []
