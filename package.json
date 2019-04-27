@@ -1,9 +1,9 @@
 {
   "name": "@mjl-/tuit",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "typed ui toolkit for the web",
   "main": "tuit.js",
-  "types": "tuit.js.d",
+  "types": "tuit.d.ts",
   "dependencies": {
     "csstype": "^2.6.4"
   },
