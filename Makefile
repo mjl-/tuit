@@ -15,4 +15,5 @@ docs:
 
 setup:
 	-mkdir -p node_modules/.bin
-	npm install typescript@3.4.5 typescript-formatter@7.2.2 csstype@2.6.4
+	npm install csstype@2.6.4
+	npm install --save-dev typescript@3.4.5 typescript-formatter@7.2.2

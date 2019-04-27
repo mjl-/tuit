@@ -5,11 +5,12 @@
   "main": "tuit.js",
   "types": "tuit.js.d",
   "dependencies": {
-    "csstype": "^2.6.4",
+    "csstype": "^2.6.4"
+  },
+  "devDependencies": {
     "typescript": "^3.4.5",
     "typescript-formatter": "^7.2.2"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
