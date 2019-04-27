@@ -44,3 +44,8 @@ Tuit only works in the major evergreen browsers.
 - add possibility to add form validation function that results in clear error messages.
 - expand form fields with help explanation.
 - think about how to use icons. web fonts are nice but too big. can we convert font to something in js? eg svg, or drawn on canvas. then we need a build tool that generates the file with just what we need, and we include that in the ts build.
+- :hover pseudostyles get recreated many times
+- add disabled style for buttons
+- use typescripts strictBindCallApply
+- make another test app and see how hard this is to use, and especially how much the types actually help you.
+- figure out how to do icons. svg? colors? ideally in a dynamically loaded js?
