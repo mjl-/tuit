@@ -1,5 +1,5 @@
 {
-  "name": "tuit",
+  "name": "@mjl-/tuit",
   "version": "0.0.1",
   "description": "typed ui toolkit for the web",
   "main": "tuit.js",
